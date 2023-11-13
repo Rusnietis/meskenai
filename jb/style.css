@@ -9,26 +9,38 @@ body{
 
 .flex-container {
     display: flex;
-    height: 700%;
     flex-wrap: wrap;
-    cam
+    flex-wrap: wrap;
     justify-content: space-between;
+    height: 700px;
     align-items: stretch;
     width: calc(100%-20px);
     margin: 10px;
     padding: 10px;
-    border: 1px solid green;
+    border: 1px solid #ccc;
     box-sizing: border-box;
 
 }
 .flex-item {
-    padding: 10 px;
-    border: 1px solid black;
+    
+    border: 1px solid #ccc;
     box-sizing: border-box;
     width: 100px;
-    height: 50px;
+    /* height: 50px; */
     text-align: center;
     justify-content: center;
     line-height: 50px;
-
+    padding: 10 px;
+}
+@media only screen and (max-width: 880px) }
+ .flex-item {
+     width: 30%;
+}
+ @media only screen and (max-width: 580px) }
+ .flex-item {
+     width: 45%; 
+}
+ @media only screen and (max-width: 380px) }
+ .flex-item {
+     width: 90%;
 }
