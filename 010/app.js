@@ -1,46 +1,62 @@
-function rand(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+console.log('Hello from app.js... How are you?');
 
-// console.log('pirmas uzdavinys');
+let a = true;
+let b = false;
 
-// let a = rand (1,6);
-// let b = rand (1,6);
- 
-// console.log (a, b);
+// console.log(a, typeof a);
+// console.log(b, typeof b);
 
-// if ((a+b)>8) {
-//     console.log('jus laimejote');
-// } else if((a+b)<8) {
-//     console.log('jus pralaimejote');
-// }
-// let Pilkis = Math.floor(Math.random() * 4) + 3;
-// let Murklys = Math.floor(Math.random() * 4) + 3;
-// console.log(`Pilkis sveria ${Pilkis} kg, o Murklys sveria ${Murklys} kg.`);
-// if (Pilkis < Murklys) {
-//     console.log(`Lengvesnis katinukas yra Pilkis.`);
-// } else if (Murklys < Pilkis) {
-//     console.log(`Lengvesnis katinukas yra Murklys.`);
-// } else {
-//     console.log(`Katinukų svoriai vienodi.`);
-// }
+let c = a / b;
+
+// console.log(c, typeof c);
 
 
-// let valkar = rand(0,30);
-// let valkat = rand(0,30);
+// true => 1
+// false => 0
+// 0 => false
+// 1, 5, 874, 500, -654... => true
 
-// console.log(valkar, valkat);
-
-// if(valkar<=15&&valkat<=15) {
-//     console.log('I valtis telpa ir karves ir katinai');
-// }
-//  else if(valkar>15&&valkat>15) {
-//     console.log('I valtis netelpa');
-// } 
-//  else if(valkar<15&&valkat>15) {
-//     console.log('I valtis netelpa');
-// }
+// OR, AND, NOT
 
 
+let d = !!!a;
+
+// console.log(d, typeof d);
+
+let e = 0;
+
+let z = !!e;
+
+// console.log(z, typeof z);
+
+
+let t = true;
+let f = false;
+
+// OR => ||
+// console.log('t || t', t || t);
+// console.log('t || f', t || f);
+// console.log('f || t', f || t);
+// console.log('f || f', f || f);
+// console.log('f || t || f || f', f || t || f || f);
+
+// AND => &&
+// console.log('t && t', t && t);
+// console.log('t && f', t && f);
+// console.log('f && t', f && t);
+// console.log('f && f', f && f);
+// console.log('f && t && f && f', f && t && f && f);
+
+let bever = '0';
+
+// console.log(!!bever);
+
+let x = 'abc';
+let y = 10;
+let v = '';
+
+console.log(v || y || v);
+
+console.log(x && v && y);
+
+console.log(v || !(y && x));

@@ -1,0 +1,82 @@
+body {
+  margin: 0;
+  padding: 0;
+  border: 1px solid black;
+  width: 1510px; 
+  height: 921px;
+  background-color: wheat;
+}
+.header {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left:0;
+  right: 0;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding: 0 8%;
+  background-color: #4d624e;
+}
+.logo {
+  font-family: 'Libre+Baskerville', serif;
+  text-decoration: ;
+  letter-spacing: 5px;
+  font-weight: 400;
+  font-size: 52.5px;
+  color: white;
+}
+.navi ul li {
+  position:relative;
+  float: left;
+  display: block;
+  padding: 12px 27px 12px 15px;
+  font-family: general sans-serif;
+  font-size: 16px;
+  color: white;
+} 
+.navi ul li:hover {
+ background: #4d624e;
+ color: white;
+}
+.navi ul li ul li {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 16px;
+  color: black;
+
+}
+.navi ul li ul li:hover {
+ background: black;
+}
+.navi ul li ul {
+ position: absolute;
+ left: 0;
+ width: 100%;
+ background: white;
+ display: none;
+}
+.navi ul li:hover > ul {
+  display: initial;
+}
+.sear ul li {
+  position:relative;
+  float: left;
+  display: block;
+  padding: 12px 27px 12px 15px;
+  font-family: 'General' sans-serif;
+  font-size: 16px;
+  color: white;
+}
+
+
+.flex-container3 { 
+  display: flex;
+  justify-content: end;
+  margin: 0;
+  padding: 0;
+  border: 1px solid black;
+  width: 1510px;
+  height: 800px;
+  background-color: #4d624e;
+}
+
