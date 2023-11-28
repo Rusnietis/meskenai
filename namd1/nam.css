@@ -1,0 +1,68 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+    background-color: white;
+}
+.container {
+    display: flex;
+    flex-flow: row wrap;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: space-between;
+    max-width: 1500px;
+    margin: 0 auto;
+
+}
+.header {
+    display: flex;
+    background-color: green;
+    width: 1500px;
+    height: 250px;
+    margin: 0 auto;
+}
+.lists {
+    flex-grow: 2;
+    background-color: green;
+    width: 500px;
+    height: 250px;
+    margin: 5px 5px;
+    border: 1px solid black;
+ 
+}
+.sales {
+    background-color: green;
+    width: 1500px;
+    height: 250px;
+    margin: 5px 5px 5px 5px;
+}
+.tit {
+    background-color: green;
+    width: 1500px;
+    height: 250px;
+    margin: 5px 5px 5px 5px;
+}
+.card {
+    background-color: green;
+    width: 450px;
+    height: 500px;
+    margin: 5px 5px;
+    border: 1px solid black;
+   
+}
+@media only screen and (max-with: 1500px) {
+     .header {
+      width: 800px;
+
+    }
+    lists {
+        background-color: green;
+        width: 800px;
+    }
+}
+
+
+}
+    

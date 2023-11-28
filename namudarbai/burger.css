@@ -1,0 +1,40 @@
+.header_burger-btn {
+   display: none;
+   position: relative;
+   width: 40px;
+   height: 40px;
+   border: none;
+   background-color: aqua;
+
+}
+.header_burger-btn span {
+    position: absolute;
+    width: 30px;
+    height: 3px;
+    background-color: black;
+    left: 5px;
+}
+
+.header_burger-btn span:nth-child(1) {
+    transform: translateY(-10px);
+}
+.header_burger-btn span:nth-child(3) {
+    transform: translateY(10px);
+}
+
+
+
+
+
+@media (max-width: 992px) {
+    .header_burger-btn {
+        display: block;
+    }
+    .navi {
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-color: blueviolet;
+        
+    }
+}
