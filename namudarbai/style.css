@@ -206,7 +206,7 @@
 .list-1 {
   flex-grow: 2;
   background-color: #4d624e;
-  width: 580px;
+  width: 750px;
   height: 600px;
   margin: 0;
 
@@ -214,7 +214,7 @@
 .list-2 {
   flex-grow: 2;
   background-color: #4d624e;
-  width: 600px;
+  width: 750px;
   height: 600px;
   margin: 0;
 
@@ -282,7 +282,8 @@
   color: black;
 }
 .card {
-  flex-grow: 3;
+  grid-template-columns: 1fr 1fr 1rr;
+  /* flex-grow: 3; */
   background-color: white;
   font-family: 'Libre+Baskerville', serif;
   font-size: 30px;
@@ -318,6 +319,15 @@
   font-size: 25px;
   font-weight: 400;
   margin: 10px 0 10px 0;
+}
+.discover {
+  flex-grow: 1;
+
+  font-family: 'monospace';
+  font-size: 14px;
+  padding: 10px 30px;
+  background-color: white;
+  border: 1px solid black;
 }
 
 

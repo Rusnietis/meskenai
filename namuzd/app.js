@@ -61,19 +61,35 @@ function rand(min, max) {
 // console.log(kint1);
 
 
-function factorial(n) {
-  let answer = 1;
-  if (n == 0 || n == 1) {
-    return answer;
-  } else if (n > 1) {
-    for (let i = n; i >= 1; i--) {
-      answer = answer * i;
-    }
-    return answer;
-  } else {
-    return "number has to be positive.";
+// function factorial(n) {
+//   let answer = 1;
+//   if (n == 0 || n == 1) {
+//     return answer;
+//   } else if (n > 1) {
+//     for (let i = n; i >= 1; i--) {
+//       answer = answer * i;
+//     }
+//     return answer;
+//   } else {
+//     return "number has to be positive.";
+//   }
+// }
+// let n = 6;
+// answer = factorial(n);
+// console.log("Factorial of " + n + " : " + answer);
+
+
+console.log('labas');
+
+console.log('Ketvirtas uzdavinys');
+
+let fun4 = function (a) {
+  let  n=0;
+ for (let i = a-1; i >1; i--) {
+  if (a%i==0) {
+      n++;
   }
-}
-let n = 6;
-answer = factorial(n);
-console.log("Factorial of " + n + " : " + answer);
+ }console.log(n,'n')
+} 
+let four =20
+fun4(four)
