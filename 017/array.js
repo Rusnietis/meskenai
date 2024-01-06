@@ -11,7 +11,7 @@ const animals = [
     'Turtle',
     'Snake'
 ];
-
+console.log(animals);
 
 animals[4] = 'Frog';
 animals.push('Elephant');
@@ -24,7 +24,7 @@ animals.pop();
 
 animals.shift(); // reindex
 animals.shift(); // reindex
-
+// Per masyva perejimas ciklu
 let animalsLine = 'Animals: ';
 for (let i = 0; i < animals.length; i++) {
     // console.log(animals[i]);

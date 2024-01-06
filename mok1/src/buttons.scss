@@ -14,7 +14,7 @@ $yellow: #FF9F1C;
     margin: 20px;
 }
 
-button {
+button:not(.btn-close) {
     appearance: none;
     backface-visibility: hidden;
     background-color: gray;
