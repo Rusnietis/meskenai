@@ -1,0 +1,15 @@
+{
+  "name": "s1",
+  "version": "1.0.0",
+  "description": "bebrų užtvankos stybos app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "Briedis",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
