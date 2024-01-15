@@ -16,6 +16,7 @@ app.use(bodyParser.json());
 
 app.get('/animals', (req, res) => {
   const data = JSON.parse(fs.readFileSync('./data/data.json', 'utf8'));
+  // res.status(400).end();
   res.json(data);
 });
 
@@ -25,7 +26,7 @@ app.post('/animals', (req, res) => {
   newAnimal.id = uuidv4();
   data.push(newAnimal);
   fs.writeFileSync('./data/data.json', JSON.stringify(data));
-  res.json({ id: newAnimal.id });
+  res.json({ id: newAnimal.id,  message: 'Animal at home now', type: 'success' });
 });
 
 app.delete('/animals/:id', (req, res) => {
@@ -34,8 +35,8 @@ app.delete('/animals/:id', (req, res) => {
   data = data.filter(animal => animal.id !== id);
   fs.writeFileSync('./data/data.json', JSON.stringify(data));
   // respond 204 No Content
-  res.status(204).end();
-  // res.json({ status: 'ok' });
+  // res.status(204).end();
+  res.json({ message: 'Animal is free now', type: 'info' });
 });
 
 app.put('/animals/:id', (req, res) => {
@@ -44,7 +45,7 @@ app.put('/animals/:id', (req, res) => {
   const updatedAnimal = req.body;
   data = data.map(animal => animal.id === id ? {...updatedAnimal, id } : animal);
   fs.writeFileSync('./data/data.json', JSON.stringify(data));
-  res.json({ status: 'ok' });
+  res.json({ message: 'Animal is diferent now', type: 'info' });
 });
 
 
