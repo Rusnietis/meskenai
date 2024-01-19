@@ -119,21 +119,11 @@ main {
     }
   }
 }
-/* Stiliai pagal jūsų poreikius */
-body {
-  font-family: Arial, sans-serif;
-}
 
-#statistics, #createAccount {
-  margin-bottom: 20px;
-}
-
-.account {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-button {
-  margin-left: 10px;
+.forms {
+  display: flex;
+  flex-direction: row;
+  .form {
+    width: 33%;
+  }
 }
