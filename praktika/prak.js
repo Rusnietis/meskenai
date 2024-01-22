@@ -56,3 +56,26 @@ function isPrime(n) {
 
   console.log(isPrime(6)); 
   console.log(isPrime(15));
+
+
+//   spread
+
+const regular = ['VW', 'Skoda', 'Audi'];
+const electic = ['Tesla', 'BMW I3', 'Jaguar I - Pace'];
+
+const cars = [...regular, ...electic];
+
+const carsNew = [...cars]
+carsNew[0] = 'Motorcycle'
+
+console.log(cars)
+console.log(carsNew)
+
+const word = 'electric';
+const leters = [...word];
+
+console.log(leters)
+
+const numbers = [1, 2, 3, 4, 5];
+const squares = numbers.map(x => x**2);
+console.log(squares)
