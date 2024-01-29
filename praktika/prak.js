@@ -79,3 +79,46 @@ console.log(leters)
 const numbers = [1, 2, 3, 4, 5];
 const squares = numbers.map(x => x**2);
 console.log(squares)
+
+// Objektinis programavimas
+//Objekto sukurimas
+//shortcuts
+
+const arr = []; //masyvas
+const obj = {}; //objektas
+
+// longcuts
+
+const arr2 = new Array(); // naujas objektas (masyvas)
+const obj2 = new Object(); // naujas objektas (objektas)
+const map = new Map(); // naujas objektas
+
+// construktor
+
+class Racoon {
+  constructor(racoonName, color = 'grey') {
+
+    console.log('New rocoon is born');
+    this.food = 5;
+    this.name = racoonName;
+    this.color = color;
+  }
+    // eat method
+
+    eat() {
+      console.log(this.color + ' ' + this.name + ' is eating');
+      this.food--;
+      console.log('I have ' + this.food + ' food left')
+    }
+
+  
+
+}
+const racoon1 = new Racoon('Boby', 'brown');
+const racoon2 = new Racoon('Roby');
+
+racoon1.eat();
+racoon1.eat();
+racoon2.eat();
+racoon1.eat();
+
