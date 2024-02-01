@@ -1,0 +1,38 @@
+.fruits-bin {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 800px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    
+}
+
+.fruits-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    flex-wrap: wrap;
+    gap: 40px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    .fruit {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 250px;
+        height: 250px;
+        color: $white;
+        font-size: 30px;
+        &.rounded {
+            border-radius: 30px;
+        }
+        &.circle {
+            border-radius: 50%;
+        }
+    }
+}

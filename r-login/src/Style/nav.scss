@@ -45,5 +45,14 @@ nav {
             }
             
         }
+        i {
+            font-size: 20px;
+            color: $black;
+            cursor: pointer;
+            transition: all 0.2s;
+            &:hover {
+                color: $red;
+            }
+        }
     }
 }

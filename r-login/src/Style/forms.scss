@@ -6,6 +6,10 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
+    border: 2px solid $green;
+    border-radius: 14px;
+    padding: 20px;
+    background-color: lighten($green, 40%);
 
     input[type="text"],
     input[type="number"],
@@ -19,7 +23,7 @@
         box-sizing: border-box;
         border: 2px solid $green;
         border-radius: 4px;
-        background-color: transparent;
+        background-color: $white;
         color: $black;
         font-size: 20px;
         display: block;
@@ -36,7 +40,8 @@
 
     input[type="color"] {
         width: 100px;
-        height: 100px;
+        height: 30px;
+        cursor: pointer;
     }
 
     select {
@@ -53,10 +58,9 @@
         flex-wrap: wrap;
         width: 100%;
         gap: 10px;
-        margin: 20px;
 
         label {
-            color: $white;
+            color: $black;
             font-size: 30px;
             padding: 0 30px;
             user-select: none;
@@ -69,7 +73,7 @@
                 position: absolute;
                 top: 0;
                 left: 0;
-                color: $white;
+                color: $green;
             }
         }
 
@@ -147,6 +151,15 @@
             height: 28px;
             width: 20px;
         }
+
+    }
+    .form-group {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 10px;
 
     }
 

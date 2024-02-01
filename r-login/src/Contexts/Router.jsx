@@ -34,6 +34,7 @@ export const RouterProvider = ({ children }) => {
     const routes = [
         { path: '#home', component: <HomeIndex /> },
         { path: '#fruits', component: <FruitsIndex /> },
+        
 
         { path: '#login', component: <Login />}
 

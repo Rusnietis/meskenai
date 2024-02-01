@@ -38,6 +38,30 @@ return next();
 
 app.use(doAuth);
 
+app.get('/fruits', (req, res) => {
+  const sql = 'SELECT * FROM fruits';
+  connection.query(sql, (err, results) => {
+    if (err) {
+      res.status(500);
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+
+app.post('/fruits', (req, res) => {
+  const { name, color, form } = req.body;
+  const sql = 'INSERT INTO fruits (name, color, form ) VALUES (?, ?, ?)';
+  connection.query(sql, [name, color, form], (err, result) => {
+    if (err) {
+      res.status(500);
+    } else {
+      res.json({ success: true, id: result.insertId });
+    }
+  });
+});
+
 
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
