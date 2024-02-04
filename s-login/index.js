@@ -20,6 +20,16 @@ app.use(bodyParser.json());
 
 connection.connect();
 
+
+const checkUserIsLogged = (user, res) => {
+  if (user) {
+    return true;
+  } else {
+    res.status(401).json({ message: 'Not logged in' });
+  }
+}
+
+
 // router
 
 app.get('/', (req, res) => {
@@ -27,18 +37,44 @@ app.get('/', (req, res) => {
   res.send('Labas Bebrai!');
 });
 
+
+
 const doAuth = (req, res, next) => {
 
   const token = req.query.token || req.body.token || '';
 
-  console.log('token', token);
+  if (token === '') {
+    return next();
+  }
 
-return next();
+  const sql = `
+    SELECT users.name, users.id, users.role
+    FROM sessions
+    LEFT JOIN users ON sessions.user_id = users.id
+    WHERE sessions.id = ? AND sessions.time > ?
+  `;
+  const time = Date.now() - 1000 * 60 * 60 * 24;
+  connection.query(sql, [token, time], (err, results) => {
+    if (err) {
+      res.status(500);
+    } else {
+      if (results.length > 0) {
+        const user = results[0];
+        req.user = user;
+      }
+    }
+    return next();
+  });
 };
 
 app.use(doAuth);
 
 app.get('/fruits', (req, res) => {
+
+  if (!checkUserIsLogged(req.user, res)) {
+    return;
+  }
+
   const sql = 'SELECT * FROM fruits';
   connection.query(sql, (err, results) => {
     if (err) {
@@ -57,7 +93,7 @@ app.post('/fruits', (req, res) => {
     if (err) {
       res.status(500);
     } else {
-      res.json({ success: true, id: result.insertId });
+      res.json({ success: true, id: result.insertId, uuid: req.body.id });
     }
   });
 });

@@ -1,5 +1,6 @@
 import { createContext, useState } from 'react';
 
+
 export const Auth = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -17,6 +18,7 @@ export const AuthProvider = ({ children }) => {
         window.localStorage.removeItem('token');
         window.localStorage.removeItem('user');
         setUser(null);
+        window.location.href = '#login';
     }
 
     const login = (token, user) => {

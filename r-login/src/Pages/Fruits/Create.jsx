@@ -1,6 +1,7 @@
 import { Fruits } from '../../Contexts/Fruits';
 import TopNav from '../TopNav';
 import { useContext, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Create() {
 
@@ -8,16 +9,18 @@ export default function Create() {
     const [color, setColor] = useState('#BF8431');
     const [form, setForm] = useState('square');
 
-    const { setCreateFruit } = useContext(Fruits);
+    const { setCreateFruit, setFruits } = useContext(Fruits);
 
     const add = _ => {
         const fruit = {
             name,
             color,
-            form
+            form,
+            id: uuidv4(),
         };
-        console.log(fruit);
+        setFruits(f => [...f, {...fruit, temp: true}]);
         setCreateFruit(fruit);
+        window.location.href = '#fruits';
     }
 
     return (
