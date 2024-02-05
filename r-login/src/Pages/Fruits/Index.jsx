@@ -3,6 +3,7 @@ import { Router } from '../../Contexts/Router';
 import Page404 from '../Page404';
 import List from './List';
 import Create from './Create';
+import Edit from './Edit';
 import { FruitsProvider } from '../../Contexts/Fruits';
 
 
@@ -17,6 +18,9 @@ export default function Index() {
 
     } else if (params.length === 1 && params[0] === 'create') {
         returnComponent = <Create />;
+        
+    } else if (params.length === 2 && params[0] === 'edit') {
+        returnComponent = <Edit />;
     }
 
     return (
