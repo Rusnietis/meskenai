@@ -1,3 +1,5 @@
+import Gate from '../Auth/Gate';
+
 export default function Fruit({fruit}) {
     return (
         <div className={`fruit ${fruit.form.toLowerCase()}`} style={{
@@ -8,13 +10,13 @@ export default function Fruit({fruit}) {
                 fruit.temp 
                 ? 
                 <span>
-                <b>Edit</b>
-                <b>Delete</b>
+                <Gate roles="admin|user"><b>Edit</b></Gate>
+                <Gate roles="admin|user"><b>Delete</b></Gate>
                 </span> 
                 : 
                 <span>
-                <b><a href={'#fruits/edit/' + fruit.id}>Edit</a></b>
-                <b><a href={'#fruits/delete/' + fruit.id}>Delete</a></b>
+                <Gate roles="admin|user"><b><a href={'#fruits/edit/' + fruit.id}>Edit</a></b></Gate>
+                <Gate roles="admin"><b><a href={'#fruits/delete/' + fruit.id}>Delete</a></b></Gate>
                 </span>
             }
 

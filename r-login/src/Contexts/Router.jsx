@@ -4,6 +4,7 @@ import FruitsIndex from '../Pages/Fruits/Index.jsx';
 import Login from '../Pages/Auth/Login.jsx';
 import Page404 from '../Pages/Page404.jsx';
 import Page401 from '../Pages/Page401.jsx';
+import UsersIndex from '../Pages/Users/Index.jsx';
 
 export const Router = createContext();
 
@@ -28,7 +29,7 @@ export const RouterProvider = ({ children }) => {
         setNotAuthorized(page401);
     }
 
-    useEffect (_ => {
+    useEffect(_ => {
         setNotAuthorized(null);
     }, [route, setNotAuthorized]);
 
@@ -47,16 +48,18 @@ export const RouterProvider = ({ children }) => {
     const routes = [
         { path: '#home', component: <HomeIndex /> },
         { path: '#fruits', component: <FruitsIndex /> },
-        
 
-        { path: '#login', component: <Login />}
+
+        { path: '#login', component: <Login /> },
+        { path: '#register', component: <UsersIndex to="register" /> },
+        { path: '#users', component: <UsersIndex /> }
 
     ];
 
     const routeComponent = routes.find(r => r.path === route)?.component || <Page404 />;
 
     return (
-        <Router.Provider value={{params, show401Page}}>
+        <Router.Provider value={{ params, show401Page }}>
             {notAuthorized ?? routeComponent}
         </Router.Provider>
     );

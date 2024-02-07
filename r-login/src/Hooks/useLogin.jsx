@@ -14,7 +14,7 @@ export default function useLogin() {
         if (null !== inputs) {
             axios.post(`${SERVER_URL}/login`, inputs)
                 .then(res => {
-                    login(res.data.token, res.data.name);
+                    login(res.data.token, res.data.name, res.data.role);
                     window.location.href = `${SITE_URL}/${AFTER_LOGIN_URL}`;
                 })
                 .catch(error => {
