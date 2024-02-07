@@ -3,13 +3,19 @@ import './buttons.scss';
 import { useState } from 'react';
 import Sq from './Components/Sq'
 import radomColor from './Functions/randomColor'
+import rand from './Functions/rand'
 
 export default function App() {
 
     const [squares, setSquares] = useState([]);
 
     const add = _ => {
-        setSquares(s => [...s, radomColor()]);
+        setSquares(s => [...s, 
+            {
+                color: radomColor(), 
+                id: rand()
+            }
+        ]);
     }
 
     const reset = _ => {

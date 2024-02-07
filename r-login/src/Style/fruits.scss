@@ -9,6 +9,13 @@
 
 }
 
+.fruits-center {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
 .fruits-box {
     display: flex;
     flex-direction: row;

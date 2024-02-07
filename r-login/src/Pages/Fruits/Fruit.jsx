@@ -14,7 +14,7 @@ export default function Fruit({fruit}) {
                 : 
                 <span>
                 <b><a href={'#fruits/edit/' + fruit.id}>Edit</a></b>
-                <b><a href="">Delete</a></b>
+                <b><a href={'#fruits/delete/' + fruit.id}>Delete</a></b>
                 </span>
             }
 
