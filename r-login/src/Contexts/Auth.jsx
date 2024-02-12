@@ -9,10 +9,12 @@ export const AuthProvider = ({ children }) => {
         const token = window.localStorage.getItem('token');
         const user = window.localStorage.getItem('user');
         const role = window.localStorage.getItem('role');
+        const id = window.localStorage.getItem('id');
         return token ? {
             token,
             user,
-            role
+            role,
+            id
         } : null;
     });
 
@@ -20,18 +22,21 @@ export const AuthProvider = ({ children }) => {
         window.localStorage.removeItem('token');
         window.localStorage.removeItem('user');
         window.localStorage.removeItem('role');
+        window.localStorage.removeItem('id');
         setUser(null);
         window.location.href = '#login';
     }
 
-    const login = (token, user, role) => {
+    const login = (token, user, role, id) => {
         window.localStorage.setItem('token', token);
         window.localStorage.setItem('user', user);
         window.localStorage.setItem('role', role);
+        window.localStorage.setItem('id', id);
         setUser({
             token,
             user,
-            role
+            role,
+            id
         });
     }
 

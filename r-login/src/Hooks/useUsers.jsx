@@ -19,6 +19,11 @@ export default function useUsers() {
             return;
         }
 
+        if ('admin' !== user.role) {
+            setUsers([{name: user.user, id: +user.id, role: user.role}]);
+            return;
+        }
+
         const withTokenUrl = 
         user ? `${SERVER_URL}/users?token=${user.token}` : `${SERVER_URL}/users`;
 
@@ -36,6 +41,7 @@ export default function useUsers() {
                         show401Page();
                     }
                 }
+                setUsers({error: true})
             });
     }, []);
     
@@ -44,11 +50,11 @@ export default function useUsers() {
         if (null !== createUser) {
 
             axios.post(`${SERVER_URL}/users`, createUser)
-                .then(res => {
+                .then(_ => {
                     setCreateUser(null);
 
                 })
-                .catch(err => {
+                .catch(_ => {
                     setCreateUser(null);
 
 
