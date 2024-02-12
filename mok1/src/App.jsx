@@ -13,11 +13,11 @@ export default function App() {
 
     const add = _ => {
         setSquares(s => [...s,
-        {     
+        {
             color: randomColor(),
             id: rand(),
         }
-    ]);
+        ]);
     }
 
     const reset = _ => {
@@ -32,18 +32,18 @@ export default function App() {
                 <div className="squares">
 
                     {
-                        squares.map((s, i) => <Sq square={s} key={i} />)
+                        // squares.map((s, i) => <Sq square={s} key={i} />)
+                        squares.map((s, i) => <Sq setSquares={setSquares} square={s} key={i} />)
                         // squares.map((s, i) => s.show ? <Sq setSquares={setSquares} square={s} key={i} /> : null)
                     }
                 </div>
-
                 <div className="buttons">
                     <button className="red" onClick={add}>+</button>
                     <button className="green" onClick={reset}>0</button>
                 </div>
                 <div className="squares">
-                    <BigSq3/>
-                    <BigSq4/>
+                    <BigSq3 />
+                    <BigSq4 />
 
                 </div>
 

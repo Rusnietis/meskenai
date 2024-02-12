@@ -1,12 +1,12 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
 // setSquares
 
-export default function Sq({ square, setSquares }) {
+export default function Sq({square, setSquares}) {
 
-    useEffect(_ => {
-         console.log('Square are born' + square.id)
+    // useEffect(_ => {
+    //      console.log('Square are born' + square.id)
 
-    }, []);
+    // }, []);
 
 
 
