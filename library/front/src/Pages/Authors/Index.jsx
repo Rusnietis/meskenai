@@ -1,6 +1,7 @@
 import Nav from "../../Components/Nav";
 import { AuthorsProvider } from "../../Contexts/Authors";
 import Create from "./Create";
+import Delete from "./Delete";
 import List from "./List";
 
 export default function Index() {
@@ -26,6 +27,7 @@ export default function Index() {
                     </div>
                 </div>
             </div>
+            <Delete />
         </AuthorsProvider>
     )
 }

@@ -12,14 +12,14 @@ export default function Create() {
 
     const [inputs, setInputs] = useState(defaultInputs);
 
-    const { setCreateAuthor } = useContext(Authors);
+    const { setStoreAuthor } = useContext(Authors);
 
     const handleChange = e => {
         setInputs(prev => ({ ...prev, [e.target.id]: e.target.value }));
     }
 
     const create = _ => {
-        setCreateAuthor(inputs);
+        setStoreAuthor(inputs);
         setInputs(defaultInputs);
     }
 
