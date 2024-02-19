@@ -6,21 +6,22 @@ export default function Edit() {
 
     const { editAuthor, setEditAuthor, setUpdateAuthor } = useContext(Authors);
 
-    const [inputs, setInputs] = useState({...editAuthor, born: editAuthor.born.split('T')[0]});
+    const [inputs, setInputs] = useState({...editAuthor, born: new Intl.DateTimeFormat('lt-LT').format(new Date(editAuthor.born))});
+
+    // editAuthor.born.split('T')[0];
 
     // useEffect(_ => {
     //     console.log('MOUNT edit');
     //     return _ => console.log('UNMOUNT edit');
     // }, []);
 
-    console.log('editAuthor', editAuthor);
 
     const handleChange = e => {
         setInputs(prev => ({ ...prev, [e.target.id]: e.target.value }));
     }
 
     const submit = _ => {
-        setUpdateAuthor({ ...editAuthor, ...inputs });
+        setUpdateAuthor({ ...editAuthor, ...inputs, old: editAuthor});
         setEditAuthor(null);
     }
 
@@ -29,7 +30,7 @@ export default function Edit() {
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Confirm delete</h5>
+                        <h5 className="modal-title">Edit</h5>
                         <button type="button" className="btn-close" aria-label="Close" onClick={_ => setEditAuthor(null)}></button>
                     </div>
                     <div className="modal-body">

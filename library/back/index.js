@@ -20,8 +20,6 @@ app.use(bodyParser.json());
 
 connection.connect();
 
-
-
 // router
 
 app.get('/', (req, res) => {
@@ -33,7 +31,7 @@ app.get('/authors', (req, res) => {
   const sql = 'SELECT * FROM authors';
   connection.query(sql, (err, results) => {
     if (err) {
-      res.status(500);
+      res.status(500).send(err);
     } else {
       res.json(results);
     }
@@ -41,12 +39,11 @@ app.get('/authors', (req, res) => {
 });
 
 app.post('/authors', (req, res) => {
-
   const { name, surname, nickname, born } = req.body;
   const sql = 'INSERT INTO authors (name, surname, nickname, born) VALUES (?, ?, ?, ?)';
   connection.query(sql, [name, surname, nickname, born], (err, result) => {
     if (err) {
-      res.status(500);
+      res.status(500).send(err);
     } else {
       res.json({ success: true, id: result.insertId, uuid: req.body.id });
     }
@@ -54,11 +51,13 @@ app.post('/authors', (req, res) => {
 });
 
 app.delete('/authors/:id', (req, res) => {
+
+ 
   
   const sql = 'DELETE FROM authors WHERE id = ?';
   connection.query(sql, [req.params.id], (err) => {
     if (err) {
-      res.status(500);
+      res.status(500).send(err);
     } else {
       res.json({ success: true, id: +req.params.id });
     }
@@ -66,17 +65,17 @@ app.delete('/authors/:id', (req, res) => {
 });
 
 app.put('/authors/:id', (req, res) => {
-    
+   
     const { name, surname, nickname, born } = req.body;
     const sql = 'UPDATE authors SET name = ?, surname = ?, nickname = ?, born = ? WHERE id = ?';
     connection.query(sql, [name, surname, nickname, born, req.params.id], (err) => {
       if (err) {
-        res.status(500);
+        res.status(500).send(err);
       } else {
         res.json({ success: true, id: +req.params.id });
       }
     });
-  });
+});
 
 
 

@@ -42,12 +42,16 @@ export default function useAuthors(dispachAuthors) {
 
     useEffect(_ => {
         if (null !== updateAuthor) {
+            dispachAuthors(a.updateAuthorAsTemp(updateAuthor));
+            
             axios.put(`${SERVER_URL}/authors/${updateAuthor.id}`, updateAuthor)
                 .then(res => {
                     setUpdateAuthor(null);
+                    dispachAuthors(a.updateAuthorAsReal(res.data));
                 })
                 .catch(err => {
                     setUpdateAuthor(null);
+                    dispachAuthors(a.updateAuthorAsUndo(updateAuthor));
                 });
         }
     }, [updateAuthor]);
