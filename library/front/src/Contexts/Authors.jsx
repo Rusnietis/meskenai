@@ -10,6 +10,7 @@ export const AuthorsProvider = ({ children }) => {
 
     const [authors, dispachAuthors] = useReducer(authorsReducer, []);
     const [deleteAuthor, setDeleteAuthor] = useState(null);
+    const [editAuthor, setEditAuthor] = useState(null);
 
     const { storeAuthor, setStoreAuthor, updateAuthor, setUpdateAuthor, destroyAuthor, setDestroyAuthor } = useAuthors(dispachAuthors);
 
@@ -19,7 +20,8 @@ export const AuthorsProvider = ({ children }) => {
             storeAuthor, setStoreAuthor,
             updateAuthor, setUpdateAuthor,
             destroyAuthor, setDestroyAuthor,
-            deleteAuthor, setDeleteAuthor
+            deleteAuthor, setDeleteAuthor,
+            editAuthor, setEditAuthor
         }}>
             {children}
         </Authors.Provider>

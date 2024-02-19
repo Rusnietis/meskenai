@@ -3,24 +3,22 @@ import { Authors } from "../../Contexts/Authors";
 
 export default function List() {
 
-    const { authors, setDeleteAuthor } = useContext(Authors);
+    const { authors, setDeleteAuthor, setEditAuthor } = useContext(Authors);
 
 
     return (
         <>
             {
                 authors.map(author => (
-                    <>
+                    <div key={author.id}>
                         {
                             author.deleted
-                                ? 
-                                <div key={author.id}>
-                                    <div className="alert alert-danger" role="alert">
-                                        {author.name} {author.surname} was deleted
-                                    </div>
+                                ?
+                                <div className="alert alert-danger mt-2" role="alert">
+                                    {author.name} {author.surname} was deleted
                                 </div>
                                 :
-                                <div key={author.id} className="card mt-2" style={{
+                                <div className="card mt-2" style={{
                                     opacity: author.temp ? 0.5 : 1
                                 }}>
                                     <div className="card-header">
@@ -43,13 +41,14 @@ export default function List() {
                                             type="button"
                                             disabled={author.temp ? true : false}
                                             className="btn btn-warning m-2"
+                                            onClick={_ => setEditAuthor(author)}
                                         >
                                             Edit
                                         </button>
                                     </div>
                                 </div>
                         }
-                    </>
+                    </div>
                 ))
             }
         </>

@@ -1,74 +1,59 @@
 import './App.scss';
 import './buttons.scss';
-import { useEffect, useState } from 'react';
-import Sq from './Components/028/Sq';
-import randomColor from './Functions/randomColor';
-import { v4 as uuidv4 } from 'uuid';
-import BigSq1 from './Components/028/BigSq1';
-import BigSq2 from './Components/028/BigSq2';
+import './form.scss';
+import { useState } from 'react';
 
+const animals = ['kate', 'suo', 'briedis', 'kiaule', 'zuikis']
 
 export default function App() {
 
-    const [squares, setSquares] = useState([]);
+    
+    const [singleText, setSingleText] = useState('');
+    const [multiText, setMultiText] = useState({
+        animal1: '',
+        animal2: '',
+        animal3: ''
+    });
 
-    const [sq2, setSq2] = useState('#444444');
-    const [sq1, setSq1] = useState('#444444');
-
-    const [sync, setSync] = useState(false);
-
-    useEffect(_ => {
-        console.log('Squres are changed');
-        if (sync) {
-            setSquares(s => s.map(s => ({ ...s, show: true })));
-            setSync(false);
-        }
-    }, [squares]);
+    const [select, setSelect] = useState('')
 
 
-    const add = _ => {
-        setSquares(s => [...s,
-        {
-            color: randomColor(),
-            id: uuidv4(),
-            show: true
-        }
-        ]);
+    const handleSingleText = e => {
+        setSingleText(e.target.value);
     }
 
-    const reset = _ => {
-        setSquares(s => s.map(s => ({ ...s, show: false })));
+    const handleMultiText = e => {
+        
+        setMultiText(prev => ({ ...prev, [e.target.name]: e.target.value }));
     }
 
-    const syncSpin = _ => {
-        setSquares(s => s.map(s => ({ ...s, show: false })));
-        setSync(true);
+    const handleSelect = e => {
+        setSelect(e.target.value);
     }
-
 
 
     return (
         <div className="App">
             <header className="App-header">
-                <h1>This is STATE part II</h1>
-                <div className="squares">
-                    {
-                        squares.map((s, i) => s.show ? <Sq setSquares={setSquares} square={s} key={i} /> : null)
-                    }
-                </div>
-                <div className="buttons">
-                    <button className="black" onClick={add}>+</button>
-                    <button className="red" onClick={reset}>0</button>
-                    <button className="green" onClick={_ => setSquares(s => s.map(s => ({ ...s, show: true })))}>*</button>
-                    <button className="yellow" onClick={syncSpin}>sync</button>
-                </div>
-                <div className="squares">
-                    <BigSq1 sq1={sq1} setSq1={setSq2} />
-                    <BigSq2 sq2={sq2} setSq2={setSq1} />
+                <h1>Form Control</h1>
+                <div className="form">
+                    <input type="text" placeholder="Name" value={singleText} onChange={handleSingleText} />
+                  
 
-                </div>
+                    <input type="text" name="animal1" placeholder="Animal 1" value={multiText.animal1} onChange={handleMultiText} />
+                    <input type="text" name="animal2" placeholder="Animal 2" value={multiText.animal2} onChange={handleMultiText} />
+                    <input type="text" name="animal3" placeholder="Animal 3" value={multiText.animal3} onChange={handleMultiText} />
+
+                    <select value={select} onChange={handleSelect}>
+                        <option value="">Select</option>
+                        {
+                            animals.map((animal, index) => <option key={index} value={animal}>{animal.toUpperCase()}</option> )
+                        }
 
 
+                    </select>
+
+                </div>
 
             </header>
         </div>

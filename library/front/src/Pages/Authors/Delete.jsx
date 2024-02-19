@@ -5,6 +5,16 @@ export default function Delete() {
 
     const { deleteAuthor, setDeleteAuthor, setDestroyAuthor } = useContext(Authors);
 
+    // useEffect(_ => {
+    //     console.log('MOUNT delete');
+    //     return _ => console.log('UNMOUNT delete');
+    // }, []);
+
+    const submit = _ => {
+        setDestroyAuthor(deleteAuthor);
+        setDeleteAuthor(null);
+    }
+
     if (!deleteAuthor) return null;
 
     return (
@@ -19,7 +29,7 @@ export default function Delete() {
                         <p>Are you sure to delete {deleteAuthor.name} {deleteAuthor.surname}?</p>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-danger" onClick={_ => setDestroyAuthor(deleteAuthor)}>Delete</button>
+                        <button type="button" className="btn btn-danger" onClick={submit}>Delete</button>
                         <button type="button" className="btn btn-secondary" onClick={_ => setDeleteAuthor(null)}>Cancel Delete</button>
                     </div>
                 </div>

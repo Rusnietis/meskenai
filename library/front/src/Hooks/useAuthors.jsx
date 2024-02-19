@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { SERVER_URL } from '../Constants/main';
-import { getAuthors, storeAuthorAsTemp, storeAuthorAsReal, deleteAuthorAsTemp, deleteAuthorAsReal } from '../Actions/authors';
+import * as a from '../Actions/authors';
 
 
 export default function useAuthors(dispachAuthors) {
@@ -15,7 +15,7 @@ export default function useAuthors(dispachAuthors) {
         axios.get(`${SERVER_URL}/authors`)
             .then(res => {
                 // console.log(res.data);
-                dispachAuthors(getAuthors(res.data))
+                dispachAuthors(a.getAuthors(res.data))
             })
             .catch(err => {
                 console.log(err);
@@ -26,59 +26,46 @@ export default function useAuthors(dispachAuthors) {
     useEffect(_ => {
         if (null !== storeAuthor) {
             const uuid = uuidv4();
-            dispachAuthors(storeAuthorAsTemp({ ...storeAuthor, id: uuid }));
+            dispachAuthors(a.storeAuthorAsTemp({ ...storeAuthor, id: uuid }));
             axios.post(`${SERVER_URL}/authors`, {...storeAuthor, id: uuid})
                 .then(res => {
                     setStoreAuthor(null);
-                    dispachAuthors(storeAuthorAsReal(res.data));
+                    dispachAuthors(a.storeAuthorAsReal(res.data));
                 })
                 .catch(err => {
+                    dispachAuthors(a.storeAuthorAsUndo({ ...storeAuthor, id: uuid }));
                     setStoreAuthor(null);
                 });
         }
-    }, [storeAuthor]);
+    }, [storeAuthor, dispachAuthors]);
 
 
-    // useEffect(_ => {
-    //     if (null !== updateAuthor) {
-
-    //         const withTokenUrl = 
-    //         user ? `${SERVER_URL}/fruits/${updateAuthor.id}?token=${user.token}` : `${SERVER_URL}/fruits/${updateAuthor.id}`;
-
-    //         axios.put(withTokenUrl, updateAuthor)
-    //             .then(res => {
-    //                 setUpdateAuthor(null);
-    //                 setAuthors(f => f.map(fruit => fruit.id === res.data.id ? {...fruit, temp: false} : fruit));
-    //             })
-    //             .catch(err => {
-    //                 setUpdateAuthor(null);
-    //                 setAuthors(f => f.map(fruit => fruit.id === updateAuthor.id ? {...fruit.preEdit, temp: false} : fruit));
-    //                 if (err.response) {
-    //                     console.log(err.response);
-    //                     if (err.response.status === 401) {
-    //                         if (err.response.data.status === 'login') {
-    //                             logout();
-    //                         }
-    //                         show401Page();
-    //                     }
-    //                 }
-    //             });
-    //     }
-    // }, [updateAuthor]);
+    useEffect(_ => {
+        if (null !== updateAuthor) {
+            axios.put(`${SERVER_URL}/authors/${updateAuthor.id}`, updateAuthor)
+                .then(res => {
+                    setUpdateAuthor(null);
+                })
+                .catch(err => {
+                    setUpdateAuthor(null);
+                });
+        }
+    }, [updateAuthor]);
 
     useEffect(_ => {
         if (null !== destroyAuthor) {
-            dispachAuthors(deleteAuthorAsTemp(destroyAuthor));
+            dispachAuthors(a.deleteAuthorAsTemp(destroyAuthor));
             axios.delete(`${SERVER_URL}/authors/${destroyAuthor.id}`)
                 .then(res => {
                     setDestroyAuthor(null);
-                    dispachAuthors(deleteAuthorAsReal(res.data));
+                    dispachAuthors(a.deleteAuthorAsReal(res.data));
                 })
                 .catch(err => {
+                    dispachAuthors(a.deleteAuthorAsUndo(destroyAuthor));
                     setDestroyAuthor(null);
                 });
         }
-    }, [destroyAuthor]);
+    }, [destroyAuthor, dispachAuthors]);
 
 
 
