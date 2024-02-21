@@ -22,7 +22,11 @@ export default function Create() {
     }
 
     const create = _ => {
-        setStoreBook(inputs);
+        const author = {
+            surname: authorsDropdown.find(author => author.id === +inputs.author_id).surname,
+            name: authorsDropdown.find(author => author.id === +inputs.author_id).name
+        }
+        setStoreBook({...inputs, author});
         setInputs(defaultInputs);
     }
 
@@ -41,7 +45,7 @@ export default function Create() {
                     <input type="text" className="form-control" id="pages" value={inputs.pages} onChange={handleChange} />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="genre" className="form-label">Nickname</label>
+                    <label htmlFor="genre" className="form-label">Genre</label>
                     <input type="text" className="form-control" id="genre" value={inputs.genre} onChange={handleChange} />
                 </div>
                 {
@@ -51,7 +55,7 @@ export default function Create() {
                         <select className="form-select" id="author_id" value={inputs.author_id} onChange={handleChange}>
                             <option value="">Select author</option>
                             {
-                                authorsDropdown.map(author => <option key={author.id} value={author.id}>{author.name}</option>)
+                                authorsDropdown.map(author => <option key={author.id} value={author.id}>{author.name} {author.surname}</option>)
                             }
                         </select>
                     </div>
