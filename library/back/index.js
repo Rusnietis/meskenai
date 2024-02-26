@@ -14,8 +14,8 @@ const app = express();
 const port = 3001;
 
 app.use(cors());
-app.use(cors());
 app.use(express.static('public'));
+
 app.use(bodyParser.json());
 
 connection.connect();
@@ -25,6 +25,26 @@ connection.connect();
 app.get('/', (req, res) => {
   console.log('Buvo užklausta /');
   res.send('Labas Bebrai!');
+});
+
+app.get('/stats', (req, res) => {
+  const sql = `
+  SELECT 'authors' AS name, COUNT(*) AS count, NULL AS stats
+  FROM authors
+  UNION
+  SELECT 'books', COUNT(*), MAX(pages)
+  FROM books
+  UNION
+  SELECT 'heroes', COUNT(*), SUM(good)
+  FROM Heroes
+  `;
+  connection.query(sql, (err, results) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.json(results);
+    }
+  });
 });
 
 app.get('/authors', (req, res) => {
@@ -56,7 +76,7 @@ app.get('/books', (req, res) => {
 
 app.get('/heroes', (req, res) => {
   const sql = `
-    SELECT h.id, h.name, a.name AS authorName, a.surname AS authorSurname, good, title, book_id
+    SELECT h.id, h.name, a.name AS authorName, a.surname AS authorSurname, good, title, book_id, h.image
     FROM heroes as h
     LEFT JOIN books as b 
     ON h.book_id = b.id
@@ -146,6 +166,7 @@ app.delete('/heroes/:id', (req, res) => {
     }
   });
 });
+
 
 
 app.put('/authors/:id', (req, res) => {
