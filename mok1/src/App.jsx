@@ -8,6 +8,7 @@ import { lsDestroy, lsRead, lsStore, lsUpdate } from './Components/Colors/lsMana
 import Read from './Components/Colors/Read';
 import Delete from './Components/Colors/Delete';
 import Edit from './Components/Colors/Edit';
+import Messages from './Components/Colors/Messages';
 
 
 
@@ -20,6 +21,7 @@ export default function App() {
     const [destroyData, setDestroyData] = useState(null);
     const [editData, setEditData] = useState(null);
     const [updateData, setUpdateData] = useState(null);
+    const [messages, setMessages] = useState([]);
 
     useEffect(_ => {
         setColors(lsRead(KEY));
@@ -52,17 +54,21 @@ export default function App() {
         if (null === updateData) {
             return;
         }
-       lsUpdate(KEY, updateData.id, updateData);
+        lsUpdate(KEY, updateData.id, updateData);
 
-       setColors(prevColors => prevColors.map(color => color.id === updateData.id ? updateData : color));
+        setColors(prevColors => prevColors.map(color => color.id === updateData.id ? updateData : color));
 
-       setEditData(null)
+        setEditData(null)
 
     }, [updateData]);
 
+    const addMessage = (type, text) => {
+        setMessages(prevMessages => [...prevMessages, { id: Date.now(), type, text }]);
+    }
+
 
     return (
-           <>
+        <>
             <div className="container text-center mt-5">
                 <div className='row'>
                     <div className='col-5'>
@@ -78,7 +84,10 @@ export default function App() {
                 </div>
             </div>
             <Delete deleteData={deleteData} setDeleteData={setDeleteData} setDestroyData={setDestroyData} />
-            <Edit editData={editData} setEditData={setEditData} setUpdateData={setUpdateData}/>
-            </>
+            <Edit editData={editData} setEditData={setEditData} setUpdateData={setUpdateData} />
+            <Messages messages={messages} />
+
+
+        </>
     );
 }
