@@ -2,92 +2,68 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
 import './buttons.scss';
 import './form.scss';
-import { useEffect, useState } from 'react';
-import Create from './Components/Colors/Create';
-import { lsDestroy, lsRead, lsStore, lsUpdate } from './Components/Colors/lsManager';
-import Read from './Components/Colors/Read';
-import Delete from './Components/Colors/Delete';
-import Edit from './Components/Colors/Edit';
-import Messages from './Components/Colors/Messages';
-
-
+import Create from './Components/Bank/Create';
+import { useState, useEffect } from 'react';
+import { lsRead, lsStore } from './Components/Bank/lsManager';
+// import { lsStore } from './Components/bank/lsManager';
 
 export default function App() {
 
-    const KEY = 'colors';
-    const [colors, setColors] = useState([]);
-    const [createData, setCreateData] = useState(null);
-    const [deleteData, setDeleteData] = useState(null);
-    const [destroyData, setDestroyData] = useState(null);
-    const [editData, setEditData] = useState(null);
-    const [updateData, setUpdateData] = useState(null);
-    const [messages, setMessages] = useState([]);
+    const KEY = 'accounts';
+    const [accounts, setAccounts] = useState([]);
+    const [createData, setCreateData] = useState([]);
+    // const [firstName, setFirstName] = useState('');
+    // const [lastName, setLastName] = useState('');
+    // const [balance, setBalance] = useState(0);
 
-    useEffect(_ => {
-        setColors(lsRead(KEY));
+    const addAccount = (_ => {
+        const newAccount = {
+            // firstName: firstName,
+            // lastName: lastName,
+            // balance: balance
+        };
+        // setAccounts([...accounts, newAccount]);
+        // setFirstName('');
+        // setLastName('');
+        // setBalance(0);
     }, []);
 
+    useEffect(_ => {
+        setAccounts(lsRead(KEY));
+    }, []);
 
     useEffect(_ => {
         if (null === createData) {
             return;
         }
-        const id = lsStore(KEY, createData);
-        setColors(prevColors => [...prevColors, { ...createData, id }]);
-
+        lsStore(KEY, createData);
     }, [createData]);
 
-
-
-    useEffect(_ => {
-        if (null === destroyData) {
-            return;
-        }
-        lsDestroy(KEY, destroyData.id);
-
-        setColors(prevColors => prevColors.filter(color => color.id !== destroyData.id));
-        setDeleteData(null);
-
-    }, [destroyData]);
-
-    useEffect(_ => {
-        if (null === updateData) {
-            return;
-        }
-        lsUpdate(KEY, updateData.id, updateData);
-
-        setColors(prevColors => prevColors.map(color => color.id === updateData.id ? updateData : color));
-
-        setEditData(null)
-
-    }, [updateData]);
-
-    const addMessage = (type, text) => {
-        setMessages(prevMessages => [...prevMessages, { id: Date.now(), type, text }]);
-    }
-
-
     return (
-        <>
-            <div className="container text-center mt-5">
-                <div className='row'>
-                    <div className='col-5'>
-                        <Create setCreateData={setCreateData} />
-                    </div>
-
-                    <div className='col-7'>
-                        <Read colors={colors} setDeleteData={setDeleteData} setEditData={setEditData} />
-                    </div>
-
-
-
+        <div className="container mt-5">
+            <div className="row">
+                <div className="row-1">
+                    row
+                </div>
+                <div className="row-2">
+                    <Create setAccounts={setAccounts} />
                 </div>
             </div>
-            <Delete deleteData={deleteData} setDeleteData={setDeleteData} setDestroyData={setDestroyData} />
-            <Edit editData={editData} setEditData={setEditData} setUpdateData={setUpdateData} />
-            <Messages messages={messages} />
 
 
-        </>
+
+
+
+
+
+
+        </div>
+
+
+
+
+
+
+
     );
 }
