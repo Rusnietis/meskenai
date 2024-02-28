@@ -1,6 +1,7 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Heroes } from '../../Contexts/Heroes';
 import useBooksDropdown from '../../Hooks/useBooksDropdown';
+import useImage from '../../Hooks/useImage';
 
 
 export default function Edit() {
@@ -9,7 +10,25 @@ export default function Edit() {
 
     const [inputs, setInputs] = useState(editHero);
 
+    const [deleteImage, setDeleteImage] = useState(false);  
+
     const { booksDropdown } = useBooksDropdown();
+
+    const { image, readImage, setImage } = useImage();
+
+    const imageInput = useRef();
+
+
+    useEffect(_ => {
+        setImage(editHero?.image);
+    }, [editHero, setImage]);
+
+
+    useEffect(_ => {
+        if (image && deleteImage) {
+            setDeleteImage(false);
+        }
+    }, [image, deleteImage, setDeleteImage]);
 
 
     const handleChange = e => {
@@ -17,6 +36,9 @@ export default function Edit() {
     }
 
     const submit = _ => {
+
+        const imageToServer = image !== editHero.image ? image : null;
+
         const author = {
             surname: booksDropdown.find(book => book.id === +inputs.book_id).surname,
             name: booksDropdown.find(book => book.id === +inputs.book_id).name
@@ -24,7 +46,7 @@ export default function Edit() {
         const book = {
             title: booksDropdown.find(book => book.id === +inputs.book_id).title
         }
-        setUpdateHero({ ...editHero, ...inputs, old: editHero, author, book });
+        setUpdateHero({ ...editHero, ...inputs, old: editHero, author, book, image: imageToServer, del: deleteImage });
         setEditHero(null);
     }
 
@@ -47,17 +69,35 @@ export default function Edit() {
                             <h5 style={{ cursor: 'pointer', display: inputs.good ? 'none' : 'block' }} onClick={_ => handleChange({ target: { value: 1, id: 'good' } })}>Bad</h5>
                         </div>
                         {
-                    booksDropdown &&
-                    <div className="mb-3">
-                        <label htmlFor="book_id" className="form-label">Book</label>
-                        <select className="form-select" id="book_id" value={inputs.book_id} onChange={handleChange}>
-                            <option value="">Select book</option>
-                            {
-                                booksDropdown.map(book => <option key={book.id} value={book.id}>{book.title}</option>)
-                            }
-                        </select>
-                    </div>
-                }
+                            booksDropdown &&
+                            <div className="mb-3">
+                                <label htmlFor="book_id" className="form-label">Book</label>
+                                <select className="form-select" id="book_id" value={inputs.book_id} onChange={handleChange}>
+                                    <option value="">Select book</option>
+                                    {
+                                        booksDropdown.map(book => <option key={book.id} value={book.id}>{book.title}</option>)
+                                    }
+                                </select>
+                            </div>
+                        }
+
+                        <div className="mb-3">
+                            <label className="form-label">
+                                <span>Image</span>
+                                <h6 style={{ cursor: 'pointer', marginLeft: '10px', display: image ? 'inline-block' : 'none' }} onClick={_ => {
+                                    setDeleteImage(true);
+                                    setImage(null);
+                                    imageInput.current.value = null;
+                                }}>Delete</h6>
+                            </label>
+                            <input ref={imageInput} type="file" className="form-control" onChange={readImage} />
+                        </div>
+                        {
+                            image &&
+                            <div className="mb-3">
+                                <img src={image} alt={editHero.name} className="img-fluid" />
+                            </div>
+                        }
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-success" onClick={submit}>Save</button>

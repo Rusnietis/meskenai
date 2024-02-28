@@ -34,7 +34,7 @@ export default function List() {
                                             </div>
                                             <div className="col-7">
                                                 {hero?.image && <img src={hero?.image} alt={hero?.name} className="img-fluid" />}
-                                                {!hero?.image && <img src={SERVER_URL + '/images/no.jpg'} alt="no image" className="img-fluid" />}
+                                                {!hero?.image && <img src={SERVER_URL + '/images/no.jpg'} alt="no" className="img-fluid" />}
                                             </div>
                                         </div>
                                     </div>
