@@ -1,6 +1,6 @@
-export function Show({account}) {
+export function Show({accounts}) {
 
     return(
-        <h2>{{account: account.account}}</h2>
+        <h2>{{accounts: accounts.accounts}}</h2>
     );
 }

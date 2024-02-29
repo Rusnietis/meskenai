@@ -6,13 +6,24 @@ export default function App({ setCreateData }) {
     const [accounts, setAccounts] = useState([]);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [sum, setSum] = useState('');
-    // const [balance, setBalance] = useState(0);
+   
+    const [balance, setBalance] = useState(0);
 
+    const addAccount = () => {
+        const newAccount = {
+          firstName: firstName,
+          lastName: lastName,
+          balance: balance
+        };
+        setAccounts([...accounts, newAccount]);
+        setFirstName('');
+        setLastName('');
+        setBalance(0);
+      }
 
     const handleSubmit = _ => {
 
-        setCreateData({ firstName, lastName, accounts, sum });
+        setCreateData({ firstName, lastName, accounts, balance });
     }
 
     return (
@@ -71,7 +82,7 @@ export default function App({ setCreateData }) {
                                 <td><input type="text" placeholder="Vardas" value={firstName} onChange={e => setFirstName(e.target.value)} /></td>
                                 <td><input type="text" placeholder="Pavardė" value={lastName} onChange={e => setLastName(e.target.value)} /></td>
                                 <td><input type="text" placeholder="Sąskaitos nr." value={accounts} onChange={e => setAccounts(e.target.value)} /></td>
-                                <td><input type="sum" placeholder="Suma Eur" value={sum} onChange={e => setSum(e.target.value)} /></td>
+                                <td><input type="sum" placeholder="Suma Eur" value={balance} onChange={e => setBalance(e.target.value)} /></td>
                                 <td>
                                     <button className="green" onClick={handleSubmit}>Pridėti</button>
                                     <button className="red">Atmesti</button>
