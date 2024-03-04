@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { SERVER_URL } from '../Constants/main';
 import * as a from '../Actions/books';
-
+import { MessagesContext } from '../Contexts/Messages';
 
 export default function useBooks(dispachBooks) {
 
     const [storeBook, setStoreBook] = useState(null);
     const [updateBook, setUpdateBook] = useState(null);
     const [destroyBook, setDestroyBook] = useState(null);
-
+    const { addMessage } = useContext(MessagesContext);
 
     //list
     useEffect(_ => {
@@ -24,9 +24,6 @@ export default function useBooks(dispachBooks) {
             });
     }, [dispachBooks]);
 
-
-
-    //store
     useEffect(_ => {
         if (null !== storeBook) {
             const uuid = uuidv4();
@@ -37,13 +34,15 @@ export default function useBooks(dispachBooks) {
                 .then(res => {
                     dispachBooks(a.storeBookAsReal(res.data));
                     setStoreBook(null);
+                    addMessage(res.data.message);
                 })
                 .catch(err => {
                     dispachBooks(a.storeBookAsUndo({ id: uuid }));
                     setStoreBook(null);
+                    err?.response?.data?.message && addMessage(err.response.data.message);
                 });
         }
-    }, [storeBook, dispachBooks]);
+    }, [storeBook, dispachBooks, addMessage]);
 
     useEffect(_ => {
         if (null !== destroyBook) {
@@ -52,13 +51,15 @@ export default function useBooks(dispachBooks) {
                 .then(res => {
                     setDestroyBook(null);
                     dispachBooks(a.deleteBookAsReal(res.data));
+                    addMessage(res.data.message);
                 })
                 .catch(err => {
                     dispachBooks(a.deleteBookAsUndo(destroyBook));
                     setDestroyBook(null);
+                    err?.response?.data?.message && addMessage(err.response.data.message);
                 });
         }
-    }, [destroyBook, dispachBooks]);
+    }, [destroyBook, dispachBooks, addMessage]);
 
 
     useEffect(_ => {
@@ -70,13 +71,15 @@ export default function useBooks(dispachBooks) {
                 .then(res => {
                     setUpdateBook(null);
                     dispachBooks(a.updateBookAsReal(res.data));
+                    addMessage(res.data.message);
                 })
                 .catch(err => {
                     setUpdateBook(null);
                     dispachBooks(a.updateBookAsUndo(updateBook));
+                    err?.response?.data?.message && addMessage(err.response.data.message);
                 });
         }
-    }, [updateBook, dispachBooks]);
+    }, [updateBook, dispachBooks, addMessage]);
 
 
 

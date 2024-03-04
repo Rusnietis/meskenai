@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { SERVER_URL } from '../Constants/main';
 import * as a from '../Actions/authors';
+import { MessagesContext } from '../Contexts/Messages';
 
 
 export default function useAuthors(dispachAuthors) {
@@ -10,6 +11,7 @@ export default function useAuthors(dispachAuthors) {
     const [storeAuthor, setStoreAuthor] = useState(null);
     const [updateAuthor, setUpdateAuthor] = useState(null);
     const [destroyAuthor, setDestroyAuthor] = useState(null);
+    const { addMessage } = useContext(MessagesContext);
 
     useEffect(_ => {
         axios.get(`${SERVER_URL}/authors`)
@@ -31,13 +33,15 @@ export default function useAuthors(dispachAuthors) {
                 .then(res => {
                     setStoreAuthor(null);
                     dispachAuthors(a.storeAuthorAsReal(res.data));
+                    addMessage(res.data.message);
                 })
                 .catch(err => {
                     dispachAuthors(a.storeAuthorAsUndo({ ...storeAuthor, id: uuid }));
                     setStoreAuthor(null);
+                    err?.response?.data?.message && addMessage(err.response.data.message);
                 });
         }
-    }, [storeAuthor, dispachAuthors]);
+    }, [storeAuthor, dispachAuthors, addMessage]);
 
 
     useEffect(_ => {
@@ -48,13 +52,15 @@ export default function useAuthors(dispachAuthors) {
                 .then(res => {
                     setUpdateAuthor(null);
                     dispachAuthors(a.updateAuthorAsReal(res.data));
+                    addMessage(res.data.message);
                 })
                 .catch(err => {
                     setUpdateAuthor(null);
                     dispachAuthors(a.updateAuthorAsUndo(updateAuthor));
+                    err?.response?.data?.message && addMessage(err.response.data.message);
                 });
         }
-    }, [updateAuthor]);
+    }, [updateAuthor, dispachAuthors, addMessage]);
 
     useEffect(_ => {
         if (null !== destroyAuthor) {
@@ -63,13 +69,15 @@ export default function useAuthors(dispachAuthors) {
                 .then(res => {
                     setDestroyAuthor(null);
                     dispachAuthors(a.deleteAuthorAsReal(res.data));
+                    addMessage(res.data.message);
                 })
                 .catch(err => {
                     dispachAuthors(a.deleteAuthorAsUndo(destroyAuthor));
                     setDestroyAuthor(null);
+                    err?.response?.data?.message && addMessage(err.response.data.message);
                 });
         }
-    }, [destroyAuthor, dispachAuthors]);
+    }, [destroyAuthor, dispachAuthors, addMessage]);
 
 
 
