@@ -1,22 +1,60 @@
-// import { Show } from "./Show"
+import { Show } from "./Show"
 
-export default function Read({ accounts }) {
+export default function Read({ accounts,setDeleteData }) {
 
     return (
-        <div className="header">
-            <div className="table-header">
+
+        <div className="card">
+            <h2>BANKAS</h2>
+            <div className="card-header">
                 <h3>Banko klientų sąrašas</h3>
 
             </div>
 
-            <table className="table">
-                {
-                    accounts.map(account => <tr key={account.id} className="table-item">Show account={account}</tr>)
-                }
+            <div className="card-body">
 
-            </table>
 
-        </div >
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Vardas</th>
+                            <th scope="col">Pavardė</th>
+                            <th scope="col">Saskaitos Nr.</th>
+                            <th scope="col">Suma Eur</th>
+                            <th scope="col">Operacijos</th>
+                        </tr>
+                    </thead>
+                </table>
+                <tbody>
+                    <ul className="list-group">
+                        <div>
+                            <th scope="row">1</th>
+
+                            {
+                                accounts.map(account => <li key={account.id} className="list-group-item"><Show account={account} setDeleteData={setDeleteData} /></li>)
+                            }
+                        </div>
+                    </ul>
+
+
+                </tbody>
+
+
+
+
+
+
+    
+               
+
+
+
+
+            </div>
+        </div>
+
+
 
 
     )

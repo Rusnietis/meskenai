@@ -3,62 +3,46 @@ import { useState } from "react";
 
 
 export default function App({ setCreateData }) {
+
     const [accounts, setAccounts] = useState([]);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-   
     const [balance, setBalance] = useState(0);
 
-    const addAccount = () => {
-        const newAccount = {
-          firstName: firstName,
-          lastName: lastName,
-          balance: balance
-        };
-        setAccounts([...accounts, newAccount]);
-        setFirstName('');
-        setLastName('');
-        setBalance(0);
-      }
+
+
+    // const addAccount = () => {
+    //     const newAccount = {
+    //       firstName: firstName,
+    //       lastName: lastName,
+    //       balance: balance
+    //     };
+    //     setAccounts([...accounts, newAccount]);
+    //     setFirstName('');
+    //     setLastName('');
+    //     setBalance(0);
+    // }
 
     const handleSubmit = _ => {
 
         setCreateData({ firstName, lastName, accounts, balance });
+        setFirstName('');
+        setLastName('');
+        setAccounts('');
+        setBalance(0);
+
     }
 
     return (
-        <>
-            <div className="container mt-10">
-                <div className="header">
-                    <div className="table-header">
-                        <h2>BANKAS</h2>
-                        {/* <h3>Banko klientų sąrašas</h3> */}
-                    </div>
 
-                    {/* <table className="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Vardas</th>
-                                <th scope="col">Pavardė</th>
-                                <th scope="col">Saskaitos Nr.</th>
-                                <th scope="col">Suma Eur</th>
-                                <th scope="col">Operacijos</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+        <div className="container mt-10">
+            <div className="header">
+                <div className="table-header">
 
-                        </tbody>
-                    </table>
-
+                    {/* <h3>Banko klientų sąrašas</h3> */}
                 </div>
-                <div className="header"> */}
+
+                <div className="header"> 
                     <div className="table-header">
 
                         <h3>Naujų banko klientų sąrašo sukurimas</h3>
@@ -104,7 +88,7 @@ export default function App({ setCreateData }) {
 
 
 
-            </div >
-        </>
-    );
+            </div>
+        </div>
+    )
 }
