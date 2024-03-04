@@ -1,6 +1,6 @@
 import { Show } from "./Show"
 
-export default function Read({ accounts,setDeleteData }) {
+export default function Read({ accounts,setDeleteData, setEditData }) {
 
     return (
 
@@ -32,7 +32,7 @@ export default function Read({ accounts,setDeleteData }) {
                             <th scope="row">1</th>
 
                             {
-                                accounts.map(account => <li key={account.id} className="list-group-item"><Show account={account} setDeleteData={setDeleteData} /></li>)
+                                accounts.map(account => <li key={account.id} className="list-group-item"><Show account={account} setDeleteData={setDeleteData} setEditData={setEditData} /></li>)
                             }
                         </div>
                     </ul>

@@ -81,13 +81,6 @@ export default function App({ setCreateData }) {
 
                 </div>
 
-
-
-
-
-
-
-
             </div>
         </div>
     )

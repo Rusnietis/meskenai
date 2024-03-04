@@ -5,8 +5,9 @@ import './form.scss';
 import Create from './Components/Bank/Create';
 import Read from './Components/Bank/Read';
 import Delete from './Components/Bank/Delete';
+import Edit from './Components/Bank/Edit';
 import { useEffect, useState } from 'react';
-import { lsDestroy, lsRead, lsStore } from './Components/Bank/lsManager';
+import { lsDestroy, lsRead, lsStore, lsUpdate } from './Components/Bank/lsManager';
 
 export default function App() {
 
@@ -15,11 +16,13 @@ export default function App() {
     const [createData, setCreateData] = useState(null);
     const [deleteData, setDeleteData] = useState(null);
     const [destroyData, setDestroyData] = useState(null);
+    const [editData, setEditData] = useState(null);
+    const [updateData, setUpdateData] = useState(null);
 
-    console.log(deleteData);
 
     useEffect(_ => {
         setAccounts(lsRead(KEY));
+        console.log(accounts)
     }, []);
 
     useEffect(_ => {
@@ -36,13 +39,28 @@ export default function App() {
             return;
         }
 
-        lsDestroy(KEY, destroyData.id);
+        lsDestroy(KEY, destroyData);  //id
 
         setAccounts(prevAccounts => prevAccounts.filter(account => account.id !== destroyData.id));
-       
 
+        setDeleteData(null);
 
     }, [destroyData]);
+
+    useEffect(_ => {
+
+        if (null === updateData) {
+            return;
+        }
+
+        lsUpdate(KEY, updateData.id, updateData);
+
+        setAccounts(prevAccounts => prevAccounts.map(account => account.id === updateData.id ? updateData : account));   //{ ...updateData, id }
+
+        setEditData(null);
+
+    }, [updateData]);
+
 
     return (
 
@@ -50,7 +68,7 @@ export default function App() {
             <div className="container mt-5">
                 <div className="row">
                     <div className="row-1">
-                        <Read accounts={accounts} setDeleteData={setDeleteData} />
+                        <Read accounts={accounts} setDeleteData={setDeleteData} setEditData={setEditData}/>
                     </div>
                     <div className="row-2">
                         <Create setCreateData={setCreateData} />
@@ -60,6 +78,8 @@ export default function App() {
 
             </div>
             <Delete deleteData={deleteData} setDeleteData={setDeleteData} setDestroyData={setDestroyData} />
+            <Edit editData={editData} setEditData={setEditData} setUpdateData={setUpdateData}/>
+        
         </>
     );
 }
