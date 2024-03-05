@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { SERVER_URL } from '../Constants/main';
 import * as a from '../Actions/heroes';
+import { MessagesContext } from '../Contexts/Messages';
 
 
 export default function useHeroes(dispachHeroes) {
@@ -10,7 +11,7 @@ export default function useHeroes(dispachHeroes) {
     const [storeHero, setStoreHero] = useState(null);
     const [updateHero, setUpdateHero] = useState(null);
     const [destroyHero, setDestroyHero] = useState(null);
-
+    const { addMessage } = useContext(MessagesContext);
 
     //list
     useEffect(_ => {
@@ -37,13 +38,15 @@ export default function useHeroes(dispachHeroes) {
                 .then(res => {
                     dispachHeroes(a.storeHeroAsReal(res.data));
                     setStoreHero(null);
+                    addMessage(res.data.message);
                 })
                 .catch(err => {
                     dispachHeroes(a.storeHeroAsUndo({ id: uuid }));
                     setStoreHero(null);
+                    err?.response?.data?.message && addMessage(err.response.data.message);
                 });
         }
-    }, [storeHero, dispachHeroes]);
+    }, [storeHero, dispachHeroes, addMessage]);
 
     useEffect(_ => {
         if (null !== destroyHero) {
@@ -52,13 +55,15 @@ export default function useHeroes(dispachHeroes) {
                 .then(res => {
                     setDestroyHero(null);
                     dispachHeroes(a.deleteHeroAsReal(res.data));
+                    addMessage(res.data.message);
                 })
                 .catch(err => {
                     dispachHeroes(a.deleteHeroAsUndo(destroyHero));
                     setDestroyHero(null);
+                    err?.response?.data?.message && addMessage(err.response.data.message);
                 });
         }
-    }, [destroyHero, dispachHeroes]);
+    }, [destroyHero, dispachHeroes, addMessage]);
 
 
     useEffect(_ => {
@@ -74,13 +79,15 @@ export default function useHeroes(dispachHeroes) {
                 .then(res => {
                     setUpdateHero(null);
                     dispachHeroes(a.updateHeroAsReal(res.data));
+                    addMessage(res.data.message);
                 })
                 .catch(err => {
                     setUpdateHero(null);
                     dispachHeroes(a.updateHeroAsUndo(updateHero));
+                    err?.response?.data?.message && addMessage(err.response.data.message);
                 });
         }
-    }, [updateHero, dispachHeroes]);
+    }, [updateHero, dispachHeroes, addMessage]);
 
 
 

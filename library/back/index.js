@@ -175,7 +175,12 @@ app.post('/heroes', (req, res) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      res.json({ success: true, id: result.insertId, uuid: req.body.id });
+      res.json({
+        success: true,
+        id: result.insertId,
+        uuid: req.body.id,
+        message: { type: 'success', text: 'Nice! Hero added!' }
+      });
     }
   });
 });
@@ -240,7 +245,11 @@ app.delete('/heroes/:id', (req, res) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      res.json({ success: true, id: +req.params.id });
+      res.json({
+        success: true,
+        id: +req.params.id,
+        message: { type: 'info', text: 'Bum! Hero deleted!' }
+      });
     }
   });
 });
@@ -298,7 +307,11 @@ app.put('/heroes/:id', (req, res) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      res.json({ success: true, id: +req.params.id });
+      res.json({
+        success: true,
+        id: +req.params.id,
+        message: { type: 'success', text: 'Perfect! Hero updated!' }
+      });
     }
   });
 });
