@@ -19,8 +19,8 @@ export default function Delete({deleteData, setDeleteData, setDestroyData}) {
                         <p>Are yuo sure?</p>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="red" onClick={_ => setDestroyData(deleteData)}>Delete</button>
-                        <button type="button" className="black"onClick={_ => setDeleteData(null)} >Cancel</button>
+                        <button type="button" className="red" onClick={_ => setDestroyData(deleteData)}>Trinti</button>
+                        <button type="button" className="black"onClick={_ => setDeleteData(null)} >Baigti</button>
                     </div>
                 </div>
             </div>

@@ -1,11 +1,13 @@
-export function Show({ accounts, setDeleteData, setEditData }) {
+export function Show({ account, setDeleteData, setEditData }) {
 
     return (
         <div className="showLine">
-            <div><h2>accounts</h2></div>
+            <span><h4>
+                {account.firstName} {account.lastName} {account.account} {account.balance}
+                </h4></span>
             <div className="buttons">
-                <button className="red" onClick={_ => setDeleteData(accounts)}>Delete</button>
-                <button className="green" onClick={_ => setEditData(accounts)}>Edit</button>
+                <button className="red" onClick={_ => setDeleteData(account)}>Trinti</button>
+                <button className="green" onClick={_ => setEditData(account)}>Edit</button>
             </div>
         </div>
     );

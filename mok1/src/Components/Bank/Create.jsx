@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function App({ setCreateData }) {
 
-    const [accounts, setAccounts] = useState([]);
+    const [account, setAccount] = useState([]);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [balance, setBalance] = useState(0);
@@ -25,10 +25,10 @@ export default function App({ setCreateData }) {
 
     const handleSubmit = _ => {
 
-        setCreateData({ firstName, lastName, accounts, balance });
+        setCreateData({ firstName, lastName, account, balance });
         setFirstName('');
         setLastName('');
-        setAccounts('');
+        setAccount('');
         setBalance(0);
 
     }
@@ -36,7 +36,7 @@ export default function App({ setCreateData }) {
     return (
 
         <div className="container mt-10">
-            <div className="header">
+            
                 <div className="table-header">
 
                     {/* <h3>Banko klientų sąrašas</h3> */}
@@ -65,11 +65,11 @@ export default function App({ setCreateData }) {
                                 <th scope="row"></th>
                                 <td><input type="text" placeholder="Vardas" value={firstName} onChange={e => setFirstName(e.target.value)} /></td>
                                 <td><input type="text" placeholder="Pavardė" value={lastName} onChange={e => setLastName(e.target.value)} /></td>
-                                <td><input type="text" placeholder="Sąskaitos nr." value={accounts} onChange={e => setAccounts(e.target.value)} /></td>
+                                <td><input type="text" placeholder="Sąskaitos nr." value={account} onChange={e => setAccount(e.target.value)} /></td>
                                 <td><input type="sum" placeholder="Suma Eur" value={balance} onChange={e => setBalance(e.target.value)} /></td>
                                 <td>
                                     <button className="green" onClick={handleSubmit}>Pridėti</button>
-                                    <button className="red">Atmesti</button>
+                                    {/* <button className="red">Atmesti</button> */}
 
                                 </td>
                             </tr>
@@ -81,7 +81,7 @@ export default function App({ setCreateData }) {
 
                 </div>
 
-            </div>
+            
         </div>
     )
 }

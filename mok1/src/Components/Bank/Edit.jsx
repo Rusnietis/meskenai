@@ -13,8 +13,9 @@ export default function Edit({ editData, setEditData, setUpdateData }) {
         if (null === editData) {
             return;
         }
+        console.log(editData)
         setFirstName(editData.firstName);
-        console.log(editData.firstName)
+        
         setLastName(editData.lastName);
         setAccounts(editData.accounts);
         setBalance(editData.balance);
@@ -43,6 +44,29 @@ export default function Edit({ editData, setEditData, setUpdateData }) {
 
     }
 
+    const deposit = (index, amount) => {
+        const newAccounts = [...accounts];
+        newAccounts[index].balance += amount;
+        setAccounts(newAccounts);
+      }
+    
+      const withdraw = (index, amount) => {
+        const newAccounts = [...accounts];
+        newAccounts[index].balance -= amount;
+        setAccounts(newAccounts);
+      }
+    
+      const sortAccounts = () => {
+        const newAccounts = [...accounts];
+        newAccounts.sort((a, b) => a.lastName.localeCompare(b.lastName));
+        setAccounts(newAccounts);
+      }
+    
+
+
+
+
+
     return (
         <div className="modal">
             <div className="modal-dialog modal-dialog-centered">
@@ -67,13 +91,13 @@ export default function Edit({ editData, setEditData, setUpdateData }) {
 
                                 <tr>
                                     <th scope="row"></th>
-                                    <td><input type="text" placeholder="Vardas" value={firstName} onChange={e => setFirstName(e.target.value)} /></td>
+                                    {/* <td><input type="text" placeholder="Vardas" value={firstName} onChange={e => setFirstName(e.target.value)} /></td>
                                     <td><input type="text" placeholder="Pavardė" value={lastName} onChange={e => setLastName(e.target.value)} /></td>
-                                    <td><input type="text" placeholder="Sąskaitos nr." value={accounts} onChange={e => setAccounts(e.target.value)} /></td>
+                                    <td><input type="text" placeholder="Sąskaitos nr." value={accounts} onChange={e => setAccounts(e.target.value)} /></td> */}
                                     <td><input type="sum" placeholder="Suma Eur" value={balance} onChange={e => setBalance(e.target.value)} /></td>
                                     <td>
                                         <button className="green" onClick={handleSubmit}>Pridėti</button>
-                                        <button className="red">Atmesti</button>
+                                        
 
                                     </td>
                                 </tr>

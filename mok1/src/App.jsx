@@ -22,7 +22,7 @@ export default function App() {
 
     useEffect(_ => {
         setAccounts(lsRead(KEY));
-        console.log(accounts)
+       
     }, []);
 
     useEffect(_ => {
