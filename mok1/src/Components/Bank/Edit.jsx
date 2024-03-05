@@ -7,7 +7,8 @@ export default function Edit({ editData, setEditData, setUpdateData }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [balance, setBalance] = useState(0);
-    
+
+
 
     useEffect(_ => {
         if (null === editData) {
@@ -15,11 +16,11 @@ export default function Edit({ editData, setEditData, setUpdateData }) {
         }
         console.log(editData)
         setFirstName(editData.firstName);
-        
+
         setLastName(editData.lastName);
         setAccounts(editData.accounts);
         setBalance(editData.balance);
-       
+
 
     }, [editData]);
 
@@ -41,27 +42,27 @@ export default function Edit({ editData, setEditData, setUpdateData }) {
         setLastName('');
         setAccounts('');
         setBalance(0);
-
+        
     }
 
     const deposit = (index, amount) => {
         const newAccounts = [...accounts];
         newAccounts[index].balance += amount;
         setAccounts(newAccounts);
-      }
-    
-      const withdraw = (index, amount) => {
+    }
+
+    const withdraw = (index, amount) => {
         const newAccounts = [...accounts];
         newAccounts[index].balance -= amount;
         setAccounts(newAccounts);
-      }
-    
-      const sortAccounts = () => {
+    }
+
+    const sortAccounts = () => {
         const newAccounts = [...accounts];
         newAccounts.sort((a, b) => a.lastName.localeCompare(b.lastName));
         setAccounts(newAccounts);
-      }
-    
+    }
+
 
 
 
@@ -96,8 +97,8 @@ export default function Edit({ editData, setEditData, setUpdateData }) {
                                     <td><input type="text" placeholder="Sąskaitos nr." value={accounts} onChange={e => setAccounts(e.target.value)} /></td> */}
                                     <td><input type="sum" placeholder="Suma Eur" value={balance} onChange={e => setBalance(e.target.value)} /></td>
                                     <td>
-                                        <button className="green" onClick={handleSubmit}>Pridėti</button>
-                                        
+                                        <button className="green" onClick={deposit}>Pridėti</button>
+
 
                                     </td>
                                 </tr>
