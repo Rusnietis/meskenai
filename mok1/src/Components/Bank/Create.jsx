@@ -8,6 +8,7 @@ export default function App({ setCreateData }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [balance, setBalance] = useState(0);
+   
 
 
 

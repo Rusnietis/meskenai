@@ -20,6 +20,7 @@ export default function Edit({ editData, setEditData, setUpdateData }) {
         setLastName(editData.lastName);
         setAccounts(editData.accounts);
         setBalance(editData.balance);
+        
 
 
     }, [editData]);
@@ -35,33 +36,33 @@ export default function Edit({ editData, setEditData, setUpdateData }) {
     }
 
 
-    const handleSubmit = _ => {
+    // const handleSubmit = _ => {
 
 
-        setFirstName('');
-        setLastName('');
-        setAccounts('');
-        setBalance(0);
+    //     setFirstName('');
+    //     setLastName('');
+    //     setAccounts('');
+    //     setBalance(0);
         
-    }
+    // }
 
-    const deposit = (index, amount) => {
-        const newAccounts = [...accounts];
-        newAccounts[index].balance += amount;
-        setAccounts(newAccounts);
-    }
+    // const deposit = (index, amount) => {
+    //     const newAccounts = [...accounts];
+    //     newAccounts[index].balance += amount;
+    //     setAccounts(newAccounts);
+    // }
 
-    const withdraw = (index, amount) => {
-        const newAccounts = [...accounts];
-        newAccounts[index].balance -= amount;
-        setAccounts(newAccounts);
-    }
+    // const withdraw = (index, amount) => {
+    //     const newAccounts = [...accounts];
+    //     newAccounts[index].balance -= amount;
+    //     setAccounts(newAccounts);
+    // }
 
-    const sortAccounts = () => {
-        const newAccounts = [...accounts];
-        newAccounts.sort((a, b) => a.lastName.localeCompare(b.lastName));
-        setAccounts(newAccounts);
-    }
+    // const sortAccounts = () => {
+    //     const newAccounts = [...accounts];
+    //     newAccounts.sort((a, b) => a.lastName.localeCompare(b.lastName));
+    //     setAccounts(newAccounts);
+    // }
 
 
 
@@ -80,10 +81,10 @@ export default function Edit({ editData, setEditData, setUpdateData }) {
                         <table className="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
+                                    {/* <th scope="col">#</th>
                                     <th scope="col">Vardas</th>
                                     <th scope="col">Pavardė</th>
-                                    <th scope="col">Saskaitos Nr.</th>
+                                    <th scope="col">Saskaitos Nr.</th> */}
                                     <th scope="col">Suma Eur</th>
                                     <th scope="col">Operacijos</th>
                                 </tr>
@@ -91,13 +92,13 @@ export default function Edit({ editData, setEditData, setUpdateData }) {
                             <tbody>
 
                                 <tr>
-                                    <th scope="row"></th>
+                                    {/* <th scope="row"></th> */}
                                     {/* <td><input type="text" placeholder="Vardas" value={firstName} onChange={e => setFirstName(e.target.value)} /></td>
                                     <td><input type="text" placeholder="Pavardė" value={lastName} onChange={e => setLastName(e.target.value)} /></td>
                                     <td><input type="text" placeholder="Sąskaitos nr." value={accounts} onChange={e => setAccounts(e.target.value)} /></td> */}
                                     <td><input type="sum" placeholder="Suma Eur" value={balance} onChange={e => setBalance(e.target.value)} /></td>
                                     <td>
-                                        <button className="green" onClick={deposit}>Pridėti</button>
+                                        <button className="green" onClick={save}>Pridėti</button>
 
 
                                     </td>

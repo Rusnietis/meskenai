@@ -12,11 +12,11 @@ export default function Delete({deleteData, setDeleteData, setDestroyData}) {
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Confirm</h5>
+                        <h5 className="modal-title">Patvirtinkite</h5>
                         <button type="button" className="btn-close" onClick={_ => setDeleteData(null)}></button>
                     </div>
                     <div className="modal-body">
-                        <p>Are yuo sure?</p>
+                        <p>Ar jus esate tikras?</p>
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="red" onClick={_ => setDestroyData(deleteData)}>Trinti</button>
