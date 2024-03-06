@@ -67,6 +67,18 @@ export const string = value => {
     return 'Not a string';
 }
 
+export const integer = value => {
+    const n = Number(value);
+    if (isNaN(n)) {
+        return 'Not a number';
+    }
+    if (n === parseInt(n, 10)) {
+        return true;
+    }
+    
+    return 'Not an integer';
+}
+
 export const number = value => {
     if (typeof value === 'number') {
         return true;
@@ -82,8 +94,16 @@ export const lettersOnly = value => {
 }
 
 export const date = value => {
-    if (value.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    const d = new Date(value);
+    if (d instanceof Date && !isNaN(d)) {
         return true;
     }
-    return 'Not a date';
+    return 'Invalid date format or date is missing';
+}
+
+export const inNumbers = (value, numbers) => {
+    if (numbers.includes(+value)) {
+        return true;
+    }
+    return 'Invalid value';
 }

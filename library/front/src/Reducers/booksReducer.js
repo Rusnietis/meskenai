@@ -4,6 +4,8 @@ export default function booksReducer(state, action) {
     let newState = structuredClone(state ? state : []);
     let book = null;
 
+    console.log(action);
+
     switch (action.type) {
         case constants.GET_BOOKS_FROM_SERVER:
             newState = action.payload.map(book => {
@@ -58,6 +60,7 @@ export default function booksReducer(state, action) {
                 delete book.temp;
                 delete book.old;
             }
+            console.log(structuredClone(book));
             break;
         case constants.UPDATE_BOOK_UNDO:
             book = newState.find(book => book.id === action.payload.id);

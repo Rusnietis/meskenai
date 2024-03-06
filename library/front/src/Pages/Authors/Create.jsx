@@ -19,16 +19,11 @@ export default function Create() {
     const { addMessage } = useContext(MessagesContext);
     const [e, setE] = useState(new Map());
 
- 
-
     const handleChange = e => {
         setInputs(prev => ({ ...prev, [e.target.id]: e.target.value }));
     }
 
     const create = _ => {
-
-        console.log(inputs);
-
         const errors = new Map();
 
         v.validate(inputs.name, 'name', errors, [v.required, v.string, v.lettersOnly, [v.min, 3], [v.max, 100]]);
@@ -39,14 +34,9 @@ export default function Create() {
         if (errors.size > 0) {
             errors.forEach(err => addMessage({ type: 'danger', text: err }));
             setE(errors);
-            console.log(errors);
-            
             return;
         }
 
-        
-
-        return;
         setStoreAuthor(inputs);
         setInputs(defaultInputs);
     }
@@ -71,7 +61,7 @@ export default function Create() {
                 </div>
                 <div className="mb-3">
                     <label htmlFor="born" className="form-label">Born</label>
-                    <input type="text" className="form-control" style={{borderColor: e.has('born') ? 'crimson' : null}} id="born" value={inputs.born} onChange={handleChange} />
+                    <input type="date" className="form-control" style={{borderColor: e.has('born') ? 'crimson' : null}} id="born" value={inputs.born} onChange={handleChange} />
                 </div>
             </div>
             <div className="card-footer">

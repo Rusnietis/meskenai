@@ -54,7 +54,8 @@ export default function useBooks(dispachBooks) {
                     addMessage(res.data.message);
                 })
                 .catch(err => {
-                    dispachBooks(a.deleteBookAsUndo(destroyBook));
+                    console.log('err', err);
+                    // dispachBooks(a.deleteBookAsUndo(destroyBook));
                     setDestroyBook(null);
                     err?.response?.data?.message && addMessage(err.response.data.message);
                 });

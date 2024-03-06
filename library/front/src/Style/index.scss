@@ -15,6 +15,7 @@ code {
 .modal {
   display: block;
   background-color: #00000080;
+  z-index: 999;
 }
 
 .messages {
