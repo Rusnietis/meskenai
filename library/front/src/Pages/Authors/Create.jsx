@@ -26,6 +26,8 @@ export default function Create() {
     const create = _ => {
         const errors = new Map();
 
+
+
         v.validate(inputs.name, 'name', errors, [v.required, v.string, v.lettersOnly, [v.min, 3], [v.max, 100]]);
         v.validate(inputs.surname, 'surname', errors, [v.required, v.string, v.lettersOnly, [v.min, 3], [v.max, 100]]);
         v.validate(inputs.nickname, 'nickname', errors, [v.sometimes, v.string, [v.min, 3], [v.max, 100]]);

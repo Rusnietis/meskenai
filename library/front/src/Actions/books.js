@@ -65,6 +65,9 @@ export function updateBookAsReal(response) {
 }
 
 export function updateBookAsUndo(book) {
+
+    // throw new Error('updateBookAsUndo');
+    console.log('updateBookAsUndo', book);
     return {
         type: constants.UPDATE_BOOK_UNDO,
         payload: book

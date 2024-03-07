@@ -30,7 +30,7 @@ export default function useBooks(dispachBooks) {
             dispachBooks(a.storeBookAsTemp({ ...storeBook, id: uuid }));
             const withOutAuthor = { ...storeBook };
             delete withOutAuthor.author;
-            axios.post(`${SERVER_URL}/books`, {...withOutAuthor, id: uuid})
+            axios.post(`${SERVER_URL}/books`, { ...withOutAuthor, id: uuid })
                 .then(res => {
                     dispachBooks(a.storeBookAsReal(res.data));
                     setStoreBook(null);
@@ -81,10 +81,6 @@ export default function useBooks(dispachBooks) {
                 });
         }
     }, [updateBook, dispachBooks, addMessage]);
-
-
-
-
 
 
     return {
