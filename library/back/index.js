@@ -17,7 +17,7 @@ const port = 3001;
 
 app.use(cors({
   origin: 'http://localhost:3000',
-  credentials: true
+  credentials: true,
 }));
 app.use(cookieParser());
 app.use(express.json({ limit: '10mb' }));
@@ -64,13 +64,80 @@ const deleteImage = heroId => {
 
 
 
+const doAuth = (req, res, next) => {
+
+  const token = req.cookies.libSession || '';
+
+  if (token === '') {
+    return next();
+  }
+
+  const sql = `
+    SELECT name, id, role
+    FROM users
+    WHERE session = ?
+  `;
+  connection.query(sql, [token], (err, results) => {
+    if (err) {
+      res.status(500).json({ message: 'Server error On Auth' });
+    } else {
+      if (results.length > 0) {
+        const user = results[0];
+        req.user = user;
+      }
+    }
+    return next();
+  });
+};
+
+app.use(doAuth);
+
+
+
+//login
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  const sql = 'SELECT * FROM users WHERE name = ? AND password = ?';
+  connection.query(sql, [username, md5(password)], (err, results) => {
+    if (err) {
+      res.status(500).json({ message: 'Server error On Login' });
+    } else {
+      if (results.length > 0) {
+        const token = md5(uuidv4());
+        const sql = 'UPDATE users SET session = ? WHERE id = ?'
+        connection.query(sql, [token, results[0].id], (err) => {
+          if (err) {
+            res.status(500).json({ message: 'Server error On Login' });
+          } else {
+            res.cookie('libSession', token, { maxAge: 1000 * 60 * 60 * 24 * 365, httpOnly: true });
+            res.json({
+              success: true,
+              name: results[0].name,
+              role: results[0].role,
+              id: results[0].id
+            });
+          }
+        });
+      } else {
+        res.status(401).json({ message: 'Invalid name or password' });
+      }
+    }
+  });
+
+});
+
+
+
 
 // router
 
 
 app.get('/stats', (req, res) => {
 
-  res.cookie('test', 'test');
+  // res.cookie('bebro-kukis', 'riestainis', { maxAge: 1000 * 60 * 60 * 24 * 365});
+
+  console.log(req.cookies['bebro-kukis']);
+  console.log(req.cookies.test);
 
 
 
@@ -144,7 +211,7 @@ app.get('/heroes', (req, res) => {
 app.post('/authors', (req, res) => {
   const { name, surname, nickname, born } = req.body;
 
-  if (!name || !surname || !born){
+  if (!name || !surname || !born) {
     res.status(422).json({ message: { type: 'danger', text: 'Name, surname and born are required.' } });
     return;
   }
@@ -167,7 +234,7 @@ app.post('/authors', (req, res) => {
 app.post('/books', (req, res) => {
   const { title, pages, genre, author_id } = req.body;
 
-  if (!title || !pages || !genre || !author_id){
+  if (!title || !pages || !genre || !author_id) {
     res.status(422).json({ message: { type: 'danger', text: 'Title, pages, genre and author are required.' } });
     return;
   }
@@ -285,10 +352,10 @@ app.delete('/heroes/:id', (req, res) => {
 
 
 app.put('/authors/:id', (req, res) => {
-  
+
   const { name, surname, nickname, born } = req.body;
 
-  if (!name || !surname || !born){
+  if (!name || !surname || !born) {
     res.status(422).json({ message: { type: 'danger', text: 'Name, surname and born are required.' } });
     return;
   }
@@ -312,7 +379,7 @@ app.put('/books/:id', (req, res) => {
 
   const { title, pages, genre, author_id } = req.body;
 
-  if (!title || !pages || !genre || !author_id){
+  if (!title || !pages || !genre || !author_id) {
     res.status(422).json({ message: { type: 'danger', text: 'Title, pages, genre and author are required.' } });
     return;
   }

@@ -9,7 +9,7 @@ export const HomeProvider = ({ children }) => {
     const [home, setHome] = useState(null);
 
     useEffect(_ => {
-        axios.get(`${SERVER_URL}/stats`)
+        axios.get(`${SERVER_URL}/stats`, { withCredentials: true })
             .then(res => {
                 setHome(res.data)
             })

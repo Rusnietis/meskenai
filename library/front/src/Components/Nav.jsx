@@ -19,9 +19,11 @@ export default function Nav() {
                             <a className="nav-link" href="#heroes">Heroes</a>
                         </li>
                     </ul>
-                    <span className="navbar-text">
-                        Login / Logout
+                    <div className="d-flex">
+                    <span className="nav-item">
+                        <a className="nav-link" href="#login">Login</a>
                     </span>
+                    </div>
                 </div>
             </div>
         </nav>

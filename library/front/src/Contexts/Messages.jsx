@@ -22,6 +22,8 @@ export const MessagesProvider = ({ children }) => {
             addMessage
         }}>
             <>
+                {
+                messages.length > 0 &&
                 <div className="messages">
                     {
                         messages.map(message => (
@@ -32,6 +34,9 @@ export const MessagesProvider = ({ children }) => {
                         ))
                     }
                 </div>
+                }
+
+
                 {children}
             </>
 
