@@ -1,9 +1,9 @@
-export default function Page404() {
+export default function Page503() {
     return (
         <div className="error-page-box">
             <div className="error-page">
-                <h1>404 Page not found</h1>
-                <a href="#home">Return Home</a>
+                <h1>503 Service Unavailable</h1>
+                <span>Try again later</span>
             </div>
         </div>
     );

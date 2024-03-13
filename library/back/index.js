@@ -62,16 +62,31 @@ const deleteImage = heroId => {
   });
 };
 
+const checkUserIsAuthorized = (user, res, roles) => {
+  if (user && roles.includes(user.role)) {
+    return true;
+  } else if (user && roles.includes('self:' + user.id)) {
+    return true;
+  } else if (user) {
+    res.status(401).json({ 
+      message: 'Not authorized',
+      type: 'role' 
+    });
+  } else {
+    res.status(401).json({ 
+      message: 'Not logged in',
+      type: 'login' 
+    });
+  }
+}
+
 
 
 const doAuth = (req, res, next) => {
-
   const token = req.cookies.libSession || '';
-
   if (token === '') {
     return next();
   }
-
   const sql = `
     SELECT name, id, role
     FROM users
@@ -123,7 +138,20 @@ app.post('/login', (req, res) => {
       }
     }
   });
+});
 
+//logout
+app.post('/logout', (req, res) => {
+  const token = req.cookies.libSession || '';
+  const sql = 'UPDATE users SET session = NULL WHERE session = ?';
+  connection.query(sql, [token], (err) => {
+    if (err) {
+      res.status(500).json({ message: { type: 'danger', text: 'Server Error.' } });
+    } else {
+      res.clearCookie('libSession');
+      res.json({ message: { type: 'success', text: 'Goodbye!' } });
+    }
+  });
 });
 
 
@@ -134,11 +162,10 @@ app.post('/login', (req, res) => {
 
 app.get('/stats', (req, res) => {
 
-  // res.cookie('bebro-kukis', 'riestainis', { maxAge: 1000 * 60 * 60 * 24 * 365});
 
-  console.log(req.cookies['bebro-kukis']);
-  console.log(req.cookies.test);
-
+  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+    return;
+  }
 
 
   const sql = `
@@ -159,6 +186,8 @@ app.get('/stats', (req, res) => {
     }
   });
 });
+
+
 
 app.get('/authors', (req, res) => {
   const sql = 'SELECT * FROM authors';

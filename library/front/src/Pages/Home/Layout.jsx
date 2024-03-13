@@ -8,6 +8,7 @@ export default function Layout() {
     const { home } = useContext(Home);
 
     if (!home) return (<div>Loading...</div>);
+    
 
     return (
         <>

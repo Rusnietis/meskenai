@@ -44,3 +44,22 @@ code {
     border-radius: 5px;
   }
 }
+
+i.logout {
+  cursor: pointer;
+  font-size: 16px;
+  color: #000000;
+}
+span.sep {
+  margin: 0 10px;
+  font-size: 16px;
+  color: #000000;
+}
+
+.error-page-box {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
