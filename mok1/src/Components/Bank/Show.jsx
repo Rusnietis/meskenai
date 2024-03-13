@@ -1,5 +1,8 @@
-export function Show({ account, setDeleteData, setEditData }) {
 
+
+export function Show({ account, setDeleteData, setEditData }) {
+   
+    
     return (
 
         <table className="table">

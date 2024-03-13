@@ -99,7 +99,7 @@ export default function Edit({ editData, setEditData, setUpdateData }) {
                                     <td><input type="sum" placeholder="Suma Eur" value={balance} onChange={e => setBalance(e.target.value)} /></td>
                                     <td>
                                         <button className="green" onClick={save}>Pridėti</button>
-
+                                        
 
                                     </td>
                                 </tr>
