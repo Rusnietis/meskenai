@@ -8,7 +8,7 @@ export const Heroes = createContext();
 
 export const HeroesProvider = ({ children }) => {
 
-    const [heroes, dispachHeroes] = useReducer(heroesReducer, []);
+    const [heroes, dispachHeroes] = useReducer(heroesReducer, null);
     const [deleteHero, setDeleteHero] = useState(null);
     const [editHero, setEditHero] = useState(null);
 

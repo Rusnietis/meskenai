@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { SERVER_URL } from '../Constants/main';
 import * as a from '../Actions/heroes';
 import { MessagesContext } from '../Contexts/Messages';
+import { Router } from '../Contexts/Router';
 
 
 export default function useHeroes(dispachHeroes) {
@@ -12,15 +13,24 @@ export default function useHeroes(dispachHeroes) {
     const [updateHero, setUpdateHero] = useState(null);
     const [destroyHero, setDestroyHero] = useState(null);
     const { addMessage } = useContext(MessagesContext);
+    const { setErrorPageType } = useContext(Router);
 
     //list
     useEffect(_ => {
-        axios.get(`${SERVER_URL}/heroes`)
+        axios.get(`${SERVER_URL}/heroes`, { withCredentials: true })
             .then(res => {
                 dispachHeroes(a.getHeroes(res.data))
             })
             .catch(err => {
-                console.log(err);
+                if (err?.response?.status === 401) {
+                    if (err.response.data.type === 'login') {
+                        window.location.href = '#login';
+                    } else {
+                        setErrorPageType(401);
+                    }
+                } else {
+                    setErrorPageType(503);
+                }
             });
     }, [dispachHeroes]);
 
@@ -34,7 +44,7 @@ export default function useHeroes(dispachHeroes) {
             const toServer = { ...storeHero };
             delete toServer.author;
             delete toServer.book;
-            axios.post(`${SERVER_URL}/heroes`, {...toServer, id: uuid})
+            axios.post(`${SERVER_URL}/heroes`, {...toServer, id: uuid}, { withCredentials: true })
                 .then(res => {
                     dispachHeroes(a.storeHeroAsReal(res.data));
                     setStoreHero(null);
@@ -51,7 +61,7 @@ export default function useHeroes(dispachHeroes) {
     useEffect(_ => {
         if (null !== destroyHero) {
             dispachHeroes(a.deleteHeroAsTemp(destroyHero));
-            axios.delete(`${SERVER_URL}/heroes/${destroyHero.id}`)
+            axios.delete(`${SERVER_URL}/heroes/${destroyHero.id}`, { withCredentials: true })
                 .then(res => {
                     setDestroyHero(null);
                     dispachHeroes(a.deleteHeroAsReal(res.data));
@@ -75,7 +85,7 @@ export default function useHeroes(dispachHeroes) {
             if (updateHero.image === updateHero.old.image) {
                 toServer.image = null;
             }
-            axios.put(`${SERVER_URL}/heroes/${updateHero.id}`, toServer)
+            axios.put(`${SERVER_URL}/heroes/${updateHero.id}`, toServer, { withCredentials: true })
                 .then(res => {
                     setUpdateHero(null);
                     dispachHeroes(a.updateHeroAsReal(res.data));

@@ -8,7 +8,7 @@ export const Authors = createContext();
 
 export const AuthorsProvider = ({ children }) => {
 
-    const [authors, dispachAuthors] = useReducer(authorsReducer, []);
+    const [authors, dispachAuthors] = useReducer(authorsReducer, null);
     const [deleteAuthor, setDeleteAuthor] = useState(null);
     const [editAuthor, setEditAuthor] = useState(null);
 

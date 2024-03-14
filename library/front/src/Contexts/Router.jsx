@@ -3,6 +3,7 @@ import { createContext, useEffect, useState } from 'react';
 import Page404 from '../Pages/Page404.jsx';
 import Page401 from '../Pages/Page401.jsx';
 import Page503 from '../Pages/Page503.jsx';
+import PageUps from '../Pages/PageUps.jsx';
 import AuthorIndex from '../Pages/Authors/Index.jsx';
 import BookIndex from '../Pages/Books/Index.jsx';
 import HeroIndex from '../Pages/Heroes/Index.jsx';
@@ -47,7 +48,8 @@ export const RouterProvider = () => {
 
     const errorPages = [
         { type: 503, component: <Page503 /> },
-        { type: 401, component: <Page401 /> }
+        { type: 401, component: <Page401 /> },
+        {type: 'ups', component: <PageUps />}
     ];
 
     const routeComponent = routes.find(r => r.path === route)?.component || <Page404 />;

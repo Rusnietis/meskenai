@@ -11,7 +11,6 @@ export default function useLogin() {
     const { login, setUser } = useContext(Auth);
     const { addMessage } = useContext(MessagesContext);
 
-
     useEffect(_ => {
         if (null !== inputs) {
             axios.post(`${SERVER_URL}/login`, inputs, { withCredentials: true })
@@ -19,7 +18,6 @@ export default function useLogin() {
                     login(res.data.name, res.data.role, res.data.id);
                     window.location.href = `${SITE_URL}/${AFTER_LOGIN_URL}`;
                     addMessage({ type: 'success', text: 'Welcome to the Library, ' + res.data.name });
-
                 })
                 .catch(error => {
                     if (!error.response) {
@@ -34,7 +32,6 @@ export default function useLogin() {
 
 
     const logout = _ => {
-
         axios.post(`${SERVER_URL}/logout`, {}, { withCredentials: true })
             .then(res => {
                 window.localStorage.removeItem('user');

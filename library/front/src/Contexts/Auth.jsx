@@ -1,11 +1,8 @@
-import { createContext, useState } from 'react';
-
-
+import { createContext, useCallback, useState } from 'react';
 
 export const Auth = createContext();
 
 export const AuthProvider = ({ children }) => {
-
 
     const [user, setUser] = useState(_ => {
         const user = window.localStorage.getItem('user');
@@ -18,8 +15,7 @@ export const AuthProvider = ({ children }) => {
         } : null;
     });
 
-
-    const login = (user, role, id) => {
+    const login = useCallback((user, role, id) => {
         window.localStorage.setItem('user', user);
         window.localStorage.setItem('role', role);
         window.localStorage.setItem('id', id);
@@ -28,7 +24,7 @@ export const AuthProvider = ({ children }) => {
             role,
             id
         });
-    }
+    }, [setUser]);
 
     return (
         <Auth.Provider value={{ user, setUser, login }}>

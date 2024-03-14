@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
   database: 'library'
 })
 const app = express();
-const port = 3001;
+const port = 80;
 
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -84,6 +84,8 @@ const checkUserIsAuthorized = (user, res, roles) => {
 
 const doAuth = (req, res, next) => {
   const token = req.cookies.libSession || '';
+
+
   if (token === '') {
     return next();
   }
@@ -163,9 +165,9 @@ app.post('/logout', (req, res) => {
 app.get('/stats', (req, res) => {
 
 
-  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
-    return;
-  }
+  // if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+  //   return;
+  // }
 
 
   const sql = `
@@ -190,6 +192,11 @@ app.get('/stats', (req, res) => {
 
 
 app.get('/authors', (req, res) => {
+
+  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+    return;
+  }
+
   const sql = 'SELECT * FROM authors';
   connection.query(sql, (err, results) => {
     if (err) {
@@ -201,6 +208,11 @@ app.get('/authors', (req, res) => {
 });
 
 app.get('/books', (req, res) => {
+
+  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+    return;
+  }
+
   const sql = `
     SELECT b.id, title, pages, genre, name, surname, author_id
     FROM books as b
@@ -217,6 +229,11 @@ app.get('/books', (req, res) => {
 });
 
 app.get('/heroes', (req, res) => {
+
+  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+    return;
+  }
+
   const sql = `
     SELECT h.id, h.name, a.name AS authorName, a.surname AS authorSurname, good, title, book_id, h.image
     FROM heroes as h
@@ -238,6 +255,12 @@ app.get('/heroes', (req, res) => {
 
 
 app.post('/authors', (req, res) => {
+
+  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+    return;
+  }
+
+
   const { name, surname, nickname, born } = req.body;
 
   if (!name || !surname || !born) {
@@ -261,6 +284,11 @@ app.post('/authors', (req, res) => {
 });
 
 app.post('/books', (req, res) => {
+
+  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+    return;
+  }
+
   const { title, pages, genre, author_id } = req.body;
 
   if (!title || !pages || !genre || !author_id) {
@@ -284,6 +312,10 @@ app.post('/books', (req, res) => {
 });
 
 app.post('/heroes', (req, res) => {
+
+  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+    return;
+  }
 
   const filename = writeImage(req.body.image);
 
@@ -312,6 +344,10 @@ app.post('/heroes', (req, res) => {
 
 app.delete('/authors/:id', (req, res) => {
 
+  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+    return;
+  }
+
   const sql = 'DELETE FROM authors WHERE id = ?';
   connection.query(sql, [req.params.id], (err) => {
     if (err) {
@@ -331,6 +367,11 @@ app.delete('/authors/:id', (req, res) => {
 });
 
 app.delete('/books/:id', (req, res) => {
+
+  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+    return;
+  }
+
   let sql;
   sql = 'SELECT image FROM heroes WHERE book_id = ?';
   connection.query(sql, [req.params.id], (err, results) => {
@@ -362,6 +403,10 @@ app.delete('/books/:id', (req, res) => {
 
 app.delete('/heroes/:id', (req, res) => {
 
+  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+    return;
+  }
+
   deleteImage(req.params.id);
 
   sql = 'DELETE FROM heroes WHERE id = ?';
@@ -381,6 +426,10 @@ app.delete('/heroes/:id', (req, res) => {
 
 
 app.put('/authors/:id', (req, res) => {
+
+  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+    return;
+  }
 
   const { name, surname, nickname, born } = req.body;
 
@@ -406,6 +455,10 @@ app.put('/authors/:id', (req, res) => {
 
 app.put('/books/:id', (req, res) => {
 
+  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+    return;
+  }
+
   const { title, pages, genre, author_id } = req.body;
 
   if (!title || !pages || !genre || !author_id) {
@@ -428,6 +481,10 @@ app.put('/books/:id', (req, res) => {
 });
 
 app.put('/heroes/:id', (req, res) => {
+
+  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+    return;
+  }
 
   if (req.body.del) {
     deleteImage(req.params.id);

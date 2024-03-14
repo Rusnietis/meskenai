@@ -3,7 +3,6 @@ import { useState } from 'react';
 export default function useImage() {
     const [image, setImage] = useState(null);
 
-
     const imageReader = img => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -19,7 +18,6 @@ export default function useImage() {
             .catch(_ => setImage(null));
     }
     
-
     return {
         image, setImage, readImage
     }

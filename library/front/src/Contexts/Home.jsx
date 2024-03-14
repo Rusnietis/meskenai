@@ -26,7 +26,6 @@ export const HomeProvider = ({ children }) => {
                 } else {
                     setErrorPageType(503);
                 }
-                console.log(err);
             });
     }, [setHome]);
 

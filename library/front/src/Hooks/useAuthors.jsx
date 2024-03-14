@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { SERVER_URL } from '../Constants/main';
 import * as a from '../Actions/authors';
 import { MessagesContext } from '../Contexts/Messages';
-
+import { Router } from '../Contexts/Router';
 
 export default function useAuthors(dispachAuthors) {
 
@@ -12,24 +12,31 @@ export default function useAuthors(dispachAuthors) {
     const [updateAuthor, setUpdateAuthor] = useState(null);
     const [destroyAuthor, setDestroyAuthor] = useState(null);
     const { addMessage } = useContext(MessagesContext);
+    const { setErrorPageType } = useContext(Router);
 
     useEffect(_ => {
-        axios.get(`${SERVER_URL}/authors`)
+        axios.get(`${SERVER_URL}/authors`, { withCredentials: true })
             .then(res => {
-                // console.log(res.data);
                 dispachAuthors(a.getAuthors(res.data))
             })
             .catch(err => {
-                console.log(err);
+                if (err?.response?.status === 401) {
+                    if (err.response.data.type === 'login') {
+                        window.location.href = '#login';
+                    } else {
+                        setErrorPageType(401);
+                    }
+                } else {
+                    setErrorPageType(503);
+                }
             });
-    }, [dispachAuthors]);
-
+    }, [dispachAuthors, setErrorPageType]);
 
     useEffect(_ => {
         if (null !== storeAuthor) {
             const uuid = uuidv4();
             dispachAuthors(a.storeAuthorAsTemp({ ...storeAuthor, id: uuid }));
-            axios.post(`${SERVER_URL}/authors`, {...storeAuthor, id: uuid})
+            axios.post(`${SERVER_URL}/authors`, {...storeAuthor, id: uuid}, { withCredentials: true })
                 .then(res => {
                     setStoreAuthor(null);
                     dispachAuthors(a.storeAuthorAsReal(res.data));
@@ -43,12 +50,11 @@ export default function useAuthors(dispachAuthors) {
         }
     }, [storeAuthor, dispachAuthors, addMessage]);
 
-
     useEffect(_ => {
         if (null !== updateAuthor) {
             dispachAuthors(a.updateAuthorAsTemp(updateAuthor));
             
-            axios.put(`${SERVER_URL}/authors/${updateAuthor.id}`, updateAuthor)
+            axios.put(`${SERVER_URL}/authors/${updateAuthor.id}`, updateAuthor, { withCredentials: true })
                 .then(res => {
                     setUpdateAuthor(null);
                     dispachAuthors(a.updateAuthorAsReal(res.data));
@@ -65,7 +71,7 @@ export default function useAuthors(dispachAuthors) {
     useEffect(_ => {
         if (null !== destroyAuthor) {
             dispachAuthors(a.deleteAuthorAsTemp(destroyAuthor));
-            axios.delete(`${SERVER_URL}/authors/${destroyAuthor.id}`)
+            axios.delete(`${SERVER_URL}/authors/${destroyAuthor.id}`, { withCredentials: true })
                 .then(res => {
                     setDestroyAuthor(null);
                     dispachAuthors(a.deleteAuthorAsReal(res.data));
@@ -78,9 +84,6 @@ export default function useAuthors(dispachAuthors) {
                 });
         }
     }, [destroyAuthor, dispachAuthors, addMessage]);
-
-
-
 
     return {
         storeAuthor,
