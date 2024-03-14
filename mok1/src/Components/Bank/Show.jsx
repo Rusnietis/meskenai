@@ -1,7 +1,9 @@
 
 
+
 export function Show({ account, setDeleteData, setEditData }) {
-   
+
+
     
     return (
 
@@ -30,8 +32,10 @@ export function Show({ account, setDeleteData, setEditData }) {
                     <td><h4>{account.balance}</h4></td>
                     <td>
                         <button className="red" onClick={_ => setDeleteData(account)}>Trinti</button>
+                        <button className="green" onClick={_ => setEditData(account)}>Edit</button>
+                    
                     </td>
-                    <button className="green" onClick={_ => setEditData(account)}>Edit</button>
+                    
                 
             
                 </tr>
@@ -42,10 +46,10 @@ export function Show({ account, setDeleteData, setEditData }) {
                     <td></td>
                     <td></td>
                     <td>
-                        {/* <button className="red" onClick={_ => setDeleteData(account)}>Trinti</button> */}
+                        {/* <button className="red" onClick={_ => setDeleteData(account)}>Trinti</button>
                         <input type="number" placeholder="Suma Eur" />
                         <button className="black">Pridėti lėšų</button>
-                        <button className="black">Nuskaityti lėšas</button>
+                        <button className="black">Nuskaityti lėšas</button> */}
                     </td>
                     {/* <button className="green" onClick={_ => setEditData(account)}>Edit</button> */}
                 
