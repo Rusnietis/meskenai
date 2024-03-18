@@ -5,12 +5,14 @@ import { SERVER_URL } from '../Constants/main';
 import * as a from '../Actions/authors';
 import { MessagesContext } from '../Contexts/Messages';
 import { Router } from '../Contexts/Router';
+import { Auth } from '../Contexts/Auth';
 
 export default function useAuthors(dispachAuthors) {
 
     const [storeAuthor, setStoreAuthor] = useState(null);
     const [updateAuthor, setUpdateAuthor] = useState(null);
     const [destroyAuthor, setDestroyAuthor] = useState(null);
+    const {setUser} = useContext(Auth);
     const { addMessage } = useContext(MessagesContext);
     const { setErrorPageType } = useContext(Router);
 
@@ -22,6 +24,10 @@ export default function useAuthors(dispachAuthors) {
             .catch(err => {
                 if (err?.response?.status === 401) {
                     if (err.response.data.type === 'login') {
+                        window.localStorage.removeItem('user');
+                        window.localStorage.removeItem('role');
+                        window.localStorage.removeItem('id');
+                        setUser(null);
                         window.location.href = '#login';
                     } else {
                         setErrorPageType(401);
