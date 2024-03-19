@@ -6,6 +6,7 @@ import Page503 from '../Pages/Page503.jsx';
 import PageUps from '../Pages/PageUps.jsx';
 
 import HomeIndex from '../Pages/Home/Index.jsx';
+import HeroIndex from '../Pages/Hero/Index.jsx';
 
 
 export const Router = createContext();
@@ -37,6 +38,8 @@ export const RouterProvider = () => {
 
     const routes = [
         { path: '#home', component: <HomeIndex /> },
+        { path: '#hero', component: <HeroIndex /> },
+
     ];
 
     const errorPages = [

@@ -118,27 +118,33 @@ app.get('/', (req, res) => {
 
   if (sort === 'name_asc') {
     sql = `
-    SELECT a.id, a.name, a.surname, b.id as book_id, b.title, b.pages, b.genre 
+    SELECT a.id, a.name, a.surname, b.id as book_id, b.title, b.pages, b.genre, h.id as hero_id, h.name as hero, good
     FROM authors as a
-    INNER JOIN books as b
+    LEFT JOIN books as b
     on a.id = b.author_id
+    LEFT JOIN heroes as h
+    on b.id = h.book_id
     ORDER BY a.surname, a.name
     `;
   } else if (sort === 'name_desc') {
     sql = `
-    SELECT a.id, a.name, a.surname, b.id as book_id, b.title, b.pages, b.genre
+    SELECT a.id, a.name, a.surname, b.id as book_id, b.title, b.pages, b.genre, h.id as hero_id, h.name as hero, good
     FROM authors as a
-    INNER JOIN books as b
+    LEFT JOIN books as b
     on a.id = b.author_id
+    LEFT JOIN heroes as h
+    on b.id = h.book_id
     ORDER BY a.surname DESC, a.name DESC
     `;
   }
   else {
     sql = `
-    SELECT a.id, a.name, a.surname, b.id as book_id, b.title, b.pages, b.genre
+    SELECT a.id, a.name, a.surname, b.id as book_id, b.title, b.pages, b.genre, h.id as hero_id, h.name as hero, good
     FROM authors as a
-    INNER JOIN books as b
+    LEFT JOIN books as b
     on a.id = b.author_id
+    LEFT JOIN heroes as h
+    on b.id = h.book_id
     `;
   }
 
