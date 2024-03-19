@@ -6,6 +6,7 @@ const mysql = require('mysql');
 const fs = require('fs');
 const md5 = require('md5');
 const { v4: uuidv4 } = require('uuid');
+const e = require('express');
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -68,14 +69,14 @@ const checkUserIsAuthorized = (user, res, roles) => {
   } else if (user && roles.includes('self:' + user.id)) {
     return true;
   } else if (user) {
-    res.status(401).json({ 
+    res.status(401).json({
       message: 'Not authorized',
-      type: 'role' 
+      type: 'role'
     });
   } else {
-    res.status(401).json({ 
+    res.status(401).json({
       message: 'Not logged in',
-      type: 'login' 
+      type: 'login'
     });
   }
 }
@@ -108,6 +109,52 @@ const doAuth = (req, res, next) => {
 };
 
 app.use(doAuth);
+
+// FRONT OFFICE //
+
+app.get('/', (req, res) => {
+  const sort = req.query.sort || '';
+  let sql;
+
+  if (sort === 'name_asc') {
+    sql = `
+    SELECT a.id, a.name, a.surname, b.id as book_id, b.title, b.pages, b.genre 
+    FROM authors as a
+    INNER JOIN books as b
+    on a.id = b.author_id
+    ORDER BY a.surname, a.name
+    `;
+  } else if (sort === 'name_desc') {
+    sql = `
+    SELECT a.id, a.name, a.surname, b.id as book_id, b.title, b.pages, b.genre
+    FROM authors as a
+    INNER JOIN books as b
+    on a.id = b.author_id
+    ORDER BY a.surname DESC, a.name DESC
+    `;
+  }
+  else {
+    sql = `
+    SELECT a.id, a.name, a.surname, b.id as book_id, b.title, b.pages, b.genre
+    FROM authors as a
+    INNER JOIN books as b
+    on a.id = b.author_id
+    `;
+  }
+
+  connection.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    else {
+      res.json(result);
+    }
+  });
+
+
+
+});
+
 
 
 

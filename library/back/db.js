@@ -130,11 +130,11 @@ const seedUsersTable = _ => {
 // Seed authors table
 const seedAuthorsTable = _ => {
     const sql = `INSERT INTO authors (name, surname, nickname, born) VALUES 
-    ('J.R.R.', 'Tolkien', 'Tolkinas', '1892-01-03'),
-    ('J.K.', 'Rowling', NULL, '1965-07-31'),
+    ('John', 'Tolkien', 'Tolkinas', '1892-01-03'),
+    ('Abrams', 'Rowling', NULL, '1965-07-31'),
     ('Stephen', 'King', NULL, '1947-09-21'),
-    ('George R.R.', 'Martin', 'Georg', '1948-09-20'),
-    ('J.R.R.', 'Martin','Cyborg', '1948-09-20')
+    ('George', 'Martin', 'Georg', '1948-09-20'),
+    ('Kate', 'Martin','Cyborg', '1948-09-20')
     `;
     connection.query(sql, function(err) {
         if (err) throw err;
