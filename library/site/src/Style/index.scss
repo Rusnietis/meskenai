@@ -97,3 +97,33 @@ span.sep {
 .mb-20 {
   margin-bottom: 20px;
 }
+
+.icon svg {
+  width: 50px;
+  height: 50px;
+  margin-left: 30px;
+}
+
+.icon.good svg {
+  fill: skyblue;
+}
+
+.icon.bad svg {
+  fill: crimson;
+}
+
+.hero-info {
+  font-size: 20px;
+  margin-top: 20px;
+  a {
+    color: peru;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.heroes-table td {
+  vertical-align: middle;
+}
