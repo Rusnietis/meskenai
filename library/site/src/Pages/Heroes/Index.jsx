@@ -1,7 +1,18 @@
+import { useEffect, useState } from 'react';
 import Nav from '../../Components/Nav';
 import useGet from '../../Hooks/useGet';
 import * as icon from '../../Icons';
 import { SERVER_URL } from '../../Constants/main';
+
+const filterBy = [
+    { filter: 'good', label: 'Good' },
+    { filter: 'bad', label: 'Bad' }
+];
+
+const sortBy = [
+    { sort: 'name_asc', label: 'Name (A-Z)' },
+    { sort: 'name_desc', label: 'Name (Z-A)' }
+];
 
 
 export default function Index() {
@@ -11,10 +22,72 @@ export default function Index() {
 
     const { data, loading, setUrl } = useGet('/heroes-list');
 
+    const [filter, setFilter] = useState('');
+    const [sort, setSort] = useState('');
+    
+
+    useEffect(_ => {
+        if (filter && !sort) {
+            setUrl(`/heroes-list?filter=${filter}`);
+        } else if (filter && sort) {
+            setUrl(`/heroes-list?filter=${filter}&sort=${sort}`);
+        } else if (!filter && sort) {
+            setUrl(`/heroes-list?sort=${sort}`);
+        }else {
+            setUrl('/heroes-list');
+        }
+    }, [filter, setUrl]);
+
+    useEffect(_ => {
+        if (sort && !filter) {
+            setUrl(`/heroes-list?sort=${sort}`);
+        } else if (sort && filter) {
+            setUrl(`/heroes-list?filter=${filter}&sort=${sort}`);
+        } else if (!sort && filter) {
+            setUrl(`/heroes-list?filter=${filter}`);
+        }else {
+            setUrl('/heroes-list');
+        }
+    }, [sort, setUrl]);
+
     const go = (e, page) => {
         e.preventDefault();
-        setUrl('/heroes-list?page=' + page);
+        if (page === 'prev') {
+            page = data.page - 1;
+            page = Math.max(1, page);
+        }
+        if (page === 'next') {
+            page = data.page + 1;
+            page = Math.min(data.totalPages, page);
+        }
+
+        if (filter && !sort) {
+            setUrl('/heroes-list?filter=' + filter + '&page=' + page);
+        } else if (filter && sort) {
+            setUrl('/heroes-list?filter=' + filter + '&sort=' + sort + '&page=' + page);
+        } else if (!filter && sort) {
+            setUrl('/heroes-list?sort=' + sort + '&page=' + page);
+        } else {
+            setUrl('/heroes-list?page=' + page);
+        }
     }
+
+    console.log(data);
+
+    const getPages = _ => {
+        const showPaginators = 3;
+        const activePage = data.page;
+        const pages = [];
+        let start = activePage - showPaginators;
+        let end = activePage + showPaginators;
+        for (let i = start; i <= end; i++) {
+            if (i >= 1 && i <= data.totalPages) {
+                pages.push(i);
+            }
+        }
+        return pages;
+    }
+
 
 
 
@@ -35,7 +108,35 @@ export default function Index() {
                     <div className="col-12 mt-4">
                         <div className="card">
                             <div className="card-header">
-                                <h3>List</h3>
+                                <div className="container">
+                                    <div className="row">
+                                        <div className="col-3">
+                                            <h3>List</h3>
+                                        </div>
+                                        <div className="col-3">
+                                            <div className="mb-3">
+                                                <label htmlFor="filter" className="form-label">Filter heroes</label>
+                                                <select className="form-select" id="filter" value={filter} onChange={e => setFilter(e.target.value)}>
+                                                    <option value="">All</option>
+                                                    {
+                                                        filterBy.map(item => <option key={item.filter} value={item.filter}>{item.label}</option>)
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="col-3">
+                                            <div className="mb-3">
+                                                <label htmlFor="sort" className="form-label">Sort by name</label>
+                                                <select className="form-select" id="sort" value={sort} onChange={e => setSort(e.target.value)}>
+                                                    <option value="">default</option>
+                                                    {
+                                                        sortBy.map(item => <option key={item.sort} value={item.sort}>{item.label}</option>)
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div className="card-body">
                                 <table className="table heroes-table">
@@ -66,14 +167,41 @@ export default function Index() {
                                     </tbody>
                                 </table>
                             </div>
-                            <nav>
+                            <nav className="paginator">
                                 <ul className="pagination">
-                                    <li className="page-item"><a className="page-link" onClick={e => go(e, 'prev')} href="/">Previous</a></li>
-                                    <li className="page-item"><a className="page-link" onClick={e => go(e, 1)} href="/">1</a></li>
-                                    <li className="page-item"><a className="page-link" onClick={e => go(e, 2)} href="/">2</a></li>
-                                    <li className="page-item"><a className="page-link" onClick={e => go(e, 3)} href="/">3</a></li>
-                                    <li className="page-item"><a className="page-link" onClick={e => go(e, 'next')} href="/">Next</a></li>
+                                    {
+                                        data.page === 1 || <li className="page-item prev"><a className="page-link" onClick={e => go(e, 1)} href="/">{icon.last}</a></li>
+                                    }
+                                    {
+                                        data.page === 1 || <li className="page-item prev"><a className="page-link" onClick={e => go(e, 'prev')} href="/">{icon.next}</a></li>
+                                    }
+
+                                    {
+                                        getPages().map(page => {
+                                            return (
+                                                <li key={page} className={'page-item' + (data.page === page ? ' active' : '')}>
+                                                    {
+                                                        data.page === page && <span className="page-link">{page}</span>
+                                                    }
+                                                    {
+                                                        data.page === page || <a className="page-link" onClick={e => go(e, page)} href="/">{page}</a>
+                                                    }
+                                                </li>
+                                            );
+                                        })
+                                    }
+
+                                    {
+                                        data.page === data.totalPages || <li className="page-item next"><a className="page-link" onClick={e => go(e, 'next')} href="/">{icon.next}</a></li>
+                                    }
+                                    {
+                                        data.page === data.totalPages || <li className="page-item next"><a className="page-link" onClick={e => go(e, data.totalPages)} href="/">{icon.last}</a></li>
+                                    }
+
                                 </ul>
+                                <div className="pages-info">
+                                    Page {data.page} of {data.totalPages}
+                                </div>
                             </nav>
                         </div>
                     </div>
