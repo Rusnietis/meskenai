@@ -17,27 +17,11 @@ const sortBy = [
 
 export default function Index() {
 
-
-
-
     const { data, loading, setUrl } = useGet('/heroes-list');
 
     const [filter, setFilter] = useState('');
     const [sort, setSort] = useState('');
     
-
-    useEffect(_ => {
-        if (filter && !sort) {
-            setUrl(`/heroes-list?filter=${filter}`);
-        } else if (filter && sort) {
-            setUrl(`/heroes-list?filter=${filter}&sort=${sort}`);
-        } else if (!filter && sort) {
-            setUrl(`/heroes-list?sort=${sort}`);
-        }else {
-            setUrl('/heroes-list');
-        }
-    }, [filter, setUrl]);
-
     useEffect(_ => {
         if (sort && !filter) {
             setUrl(`/heroes-list?sort=${sort}`);
@@ -48,7 +32,7 @@ export default function Index() {
         }else {
             setUrl('/heroes-list');
         }
-    }, [sort, setUrl]);
+    }, [sort, filter, setUrl]);
 
     const go = (e, page) => {
         e.preventDefault();
@@ -71,8 +55,6 @@ export default function Index() {
             setUrl('/heroes-list?page=' + page);
         }
     }
-
-    console.log(data);
 
     const getPages = _ => {
         const showPaginators = 3;
@@ -156,7 +138,7 @@ export default function Index() {
                                                     <td>{hero.id}</td>
                                                     <td>{hero.name}</td>
                                                     <td><span className={'icon ' + (hero.good ? 'good' : 'bad')}>{hero.good ? icon.good : icon.bad}</span></td>
-                                                    <td><a href={'#book/' + hero.book_id}>view book</a></td>
+                                                    <td><a href={'#book/' + hero.url}>{hero.title}</a></td>
                                                     <td>
                                                         {hero.image === null && <span>No image</span>}
                                                         {hero.image && <img src={SERVER_URL + '/' + hero.image} alt={hero.name} style={{ maxWidth: '200px' }} className="img-thumbnail" />}

@@ -50,6 +50,7 @@ const createAuthorsTable = _ => {
 const createBooksTable = _ => {
     const sql = `CREATE TABLE IF NOT EXISTS books (
         id INT AUTO_INCREMENT PRIMARY KEY,
+        url VARCHAR(200) NOT NULL UNIQUE,
         title VARCHAR(100) NOT NULL,
         pages INT(5) NOT NULL,
         genre VARCHAR(100) NOT NULL,
@@ -144,22 +145,22 @@ const seedAuthorsTable = _ => {
 
 // Seed books table
 const seedBooksTable = _ => {
-    const sql = `INSERT INTO books (title, pages, genre, author_id) VALUES 
-    ('Hobitas', 1256, 'Fantasy', 1),
-    ('Harry Potter', 587, 'Fantasy', 2),
-    ('The Shining', 310, 'Horror', 3),
-    ('A Game of Thrones', 562, 'Fantasy', 4),
-    ('A Clash of Kings', 865, 'Drama', 5),
-    ('A Storm of Swords', 987, 'Fantasy', 5),
-    ('A Feast for Crows', 654, 'Sci-fi', 3),
-    ('A Dance with Dragons', 789, 'Comedy', 5),
-    ('The Winds of Winter', 1234, 'Fantasy', 2),
-    ('A Dream of Spring', 987, 'Fantasy', 5),
-    ('The Lord of the Rings', 1256, 'Sci-fi', 1),
-    ('The Silmarillion', 587, 'Fantasy', 4),
-    ('The Children of Hurin', 310, 'Drama', 2),
-    ('Unfinished Tales', 562, 'Fantasy', 1),
-    ('The History of Middle-earth', 865, 'Fantasy', 1)
+    const sql = `INSERT INTO books (title, pages, genre, author_id, url) VALUES 
+    ('Hobitas', 1256, 'Fantasy', 1, 'hobitas'),
+    ('Harry Potter', 587, 'Fantasy', 2, 'harry-potter'),
+    ('The Shining', 310, 'Horror', 3, 'the-shining'),
+    ('A Game of Thrones', 562, 'Fantasy', 4, 'a-game-of-thrones'),
+    ('A Clash of Kings', 865, 'Drama', 5, 'a-clash-of-kings'),
+    ('A Storm of Swords', 987, 'Fantasy', 5, 'a-storm-of-swords'),
+    ('A Feast for Crows', 654, 'Sci-fi', 3, 'a-feast-for-crows'),
+    ('A Dance with Dragons', 789, 'Comedy', 5, 'a-dance-with-dragons'),
+    ('The Winds of Winter', 1234, 'Fantasy', 2, 'the-winds-of-winter'),
+    ('A Dream of Spring', 987, 'Fantasy', 5, 'a-dream-of-spring'),
+    ('The Lord of the Rings', 1256, 'Sci-fi', 1, 'the-lord-of-the-rings'),
+    ('The Silmarillion', 587, 'Fantasy', 4, 'the-silmarillion'),
+    ('The Children of Hurin', 310, 'Drama', 2, 'the-children-of-hurin'),
+    ('Unfinished Tales', 562, 'Fantasy', 1, 'unfinished-tales'),
+    ('The History of Middle-earth', 865, 'Fantasy', 1, 'the-history-of-middle-earth')
     `;
     connection.query(sql, function(err) {
         if (err) throw err;
