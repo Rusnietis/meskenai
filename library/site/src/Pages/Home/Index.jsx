@@ -28,6 +28,7 @@ export default function Index() {
 
 
     const authorsBooksHeroes = data => {
+        if (!data) return [];
         const authors = [];
         data.forEach(item => {
             if (!authors.some(author => author.id === item.id)) {
@@ -40,8 +41,6 @@ export default function Index() {
         });
         return authors;
     }
-
-    console.log(authorsBooksHeroes(data));
 
     useEffect(_ => {
         if (sort) {

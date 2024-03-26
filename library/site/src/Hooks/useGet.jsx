@@ -24,7 +24,7 @@ export default function useGet(startUrl) {
             .finally(_ => {
                 setLoading(false);
             });
-    }, [url]);
+    }, [url, setErrorPageType]);
 
     return { data, loading, setUrl };
 }

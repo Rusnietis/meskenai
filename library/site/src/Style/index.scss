@@ -115,9 +115,11 @@ span.sep {
 .hero-info {
   font-size: 20px;
   margin-top: 20px;
+
   a {
     color: peru;
     text-decoration: none;
+
     &:hover {
       text-decoration: underline;
     }
@@ -134,6 +136,7 @@ nav.paginator {
   margin: 10px 0 20px 30px;
   align-items: center;
   gap: 10px;
+
   ul.pagination {
     margin: 0;
   }
@@ -147,4 +150,50 @@ nav.paginator {
 
 .page-item.prev svg {
   transform: rotate(180deg);
+}
+
+.heroes-list {
+  position: relative;
+
+  .icon {
+    position: absolute;
+    top: 10px;
+    left: 0;
+  }
+}
+
+.rating {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+
+  .full-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .empty-stars:before,
+  .full-stars:before {
+    font-size: 30px;
+    content: "\2605\2605\2605\2605\2605";
+    letter-spacing: 0;
+  }
+
+  .empty-stars:before {
+    color: #f3f3f3;
+  }
+
+  .full-stars:before {
+    color: gold;
+    ;
+  }
+}
+
+.rating-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }

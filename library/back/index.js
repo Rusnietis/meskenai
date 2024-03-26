@@ -210,11 +210,11 @@ app.get('/heroes-list', (req, res) => {
   let totalPages = 0;
 
   if (filter === '') {
-  sql = `
+    sql = `
     SELECT COUNT(*) AS total
     FROM heroes
    `;
-  query = [];
+    query = [];
   } else {
     sql = `
     SELECT COUNT(*) AS total
@@ -233,15 +233,15 @@ app.get('/heroes-list', (req, res) => {
   });
 
   if (filter === '' && sort === '') {
-  sql = `
+    sql = `
     SELECT h.id, h.name, h.good, h.book_id, h.image, b.url, b.title
     FROM heroes AS h
     LEFT JOIN books AS b
     ON h.book_id = b.id
     LIMIT ?, ?
   `;
-  query = [(page - 1) * inPage, inPage];
-  
+    query = [(page - 1) * inPage, inPage];
+
 
   } else if (filter !== '' && sort === '') {
     sql = `
@@ -315,69 +315,85 @@ app.get('/heroes-list', (req, res) => {
   });
 });
 
-
-
-
-//login
-app.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  const sql = 'SELECT * FROM users WHERE name = ? AND password = ?';
-  connection.query(sql, [username, md5(password)], (err, results) => {
-    if (err) {
-      res.status(500).json({ message: 'Server error On Login' });
-    } else {
-      if (results.length > 0) {
-        const token = md5(uuidv4());
-        const sql = 'UPDATE users SET session = ? WHERE id = ?'
-        connection.query(sql, [token, results[0].id], (err) => {
-          if (err) {
-            res.status(500).json({ message: 'Server error On Login' });
-          } else {
-            res.cookie('libSession', token, { maxAge: 1000 * 60 * 60 * 24 * 365, httpOnly: true });
-            res.json({
-              success: true,
-              name: results[0].name,
-              role: results[0].role,
-              id: results[0].id
-            });
-          }
-        });
-      } else {
-        res.status(401).json({ message: 'Invalid name or password' });
-      }
-    }
-  });
-});
-
-//logout
-app.post('/logout', (req, res) => {
-  const token = req.cookies.libSession || '';
-  const sql = 'UPDATE users SET session = NULL WHERE session = ?';
-  connection.query(sql, [token], (err) => {
-    if (err) {
-      res.status(500).json({ message: { type: 'danger', text: 'Server Error.' } });
-    } else {
-      res.clearCookie('libSession');
-      res.json({ message: { type: 'success', text: 'Goodbye!' } });
-    }
-  });
-});
-
-
-
-
-// router
-
-
-app.get('/stats', (req, res) => {
-
-
-  // if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
-  //   return;
-  // }
-
-
+app.get('/rating/:slug/:mark', (req, res) => {
   const sql = `
+  SELECT ratings
+  FROM books
+  WHERE url = ?
+  `;
+  connection.query(sql, [req.params.slug], (err, result) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    else {
+      const ratings = JSON.parse(result[0].ratings);
+      const userMark = ratings.find(item => item.user === req.params.mark);
+      res.json({ canRate: userMark === undefined ? true : false });
+    }
+  });
+});
+
+
+  //login
+  app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    const sql = 'SELECT * FROM users WHERE name = ? AND password = ?';
+    connection.query(sql, [username, md5(password)], (err, results) => {
+      if (err) {
+        res.status(500).json({ message: 'Server error On Login' });
+      } else {
+        if (results.length > 0) {
+          const token = md5(uuidv4());
+          const sql = 'UPDATE users SET session = ? WHERE id = ?'
+          connection.query(sql, [token, results[0].id], (err) => {
+            if (err) {
+              res.status(500).json({ message: 'Server error On Login' });
+            } else {
+              res.cookie('libSession', token, { maxAge: 1000 * 60 * 60 * 24 * 365, httpOnly: true });
+              res.json({
+                success: true,
+                name: results[0].name,
+                role: results[0].role,
+                id: results[0].id
+              });
+            }
+          });
+        } else {
+          res.status(401).json({ message: 'Invalid name or password' });
+        }
+      }
+    });
+  });
+
+  //logout
+  app.post('/logout', (req, res) => {
+    const token = req.cookies.libSession || '';
+    const sql = 'UPDATE users SET session = NULL WHERE session = ?';
+    connection.query(sql, [token], (err) => {
+      if (err) {
+        res.status(500).json({ message: { type: 'danger', text: 'Server Error.' } });
+      } else {
+        res.clearCookie('libSession');
+        res.json({ message: { type: 'success', text: 'Goodbye!' } });
+      }
+    });
+  });
+
+
+
+
+  // router
+
+
+  app.get('/stats', (req, res) => {
+
+
+    // if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+    //   return;
+    // }
+
+
+    const sql = `
   SELECT 'authors' AS name, COUNT(*) AS count, NULL AS stats
   FROM authors
   UNION
@@ -387,61 +403,61 @@ app.get('/stats', (req, res) => {
   SELECT 'heroes', COUNT(*), SUM(good)
   FROM Heroes
   `;
-  connection.query(sql, (err, results) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.json(results);
-    }
+    connection.query(sql, (err, results) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json(results);
+      }
+    });
   });
-});
 
 
 
-app.get('/authors', (req, res) => {
+  app.get('/authors', (req, res) => {
 
-  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
-    return;
-  }
-
-  const sql = 'SELECT * FROM authors';
-  connection.query(sql, (err, results) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.json(results);
+    if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+      return;
     }
+
+    const sql = 'SELECT * FROM authors';
+    connection.query(sql, (err, results) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json(results);
+      }
+    });
   });
-});
 
-app.get('/books', (req, res) => {
+  app.get('/books', (req, res) => {
 
-  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
-    return;
-  }
+    if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+      return;
+    }
 
-  const sql = `
+    const sql = `
     SELECT b.id, title, pages, genre, name, surname, author_id
     FROM books as b
     LEFT JOIN authors as a 
     ON b.author_id = a.id
   `;
-  connection.query(sql, (err, results) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.json(results);
-    }
+    connection.query(sql, (err, results) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json(results);
+      }
+    });
   });
-});
 
-app.get('/heroes', (req, res) => {
+  app.get('/heroes', (req, res) => {
 
-  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
-    return;
-  }
+    if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+      return;
+    }
 
-  const sql = `
+    const sql = `
     SELECT h.id, h.name, a.name AS authorName, a.surname AS authorSurname, good, title, book_id, h.image
     FROM heroes as h
     LEFT JOIN books as b 
@@ -450,337 +466,337 @@ app.get('/heroes', (req, res) => {
     ON b.author_id = a.id
     ORDER BY h.id DESC
   `;
-  connection.query(sql, (err, results) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.json(results);
-    }
-  });
-});
-
-
-
-app.post('/authors', (req, res) => {
-
-  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
-    return;
-  }
-
-
-  const { name, surname, nickname, born } = req.body;
-
-  if (!name || !surname || !born) {
-    res.status(422).json({ message: { type: 'danger', text: 'Name, surname and born are required.' } });
-    return;
-  }
-
-  const sql = 'INSERT INTO authors (name, surname, nickname, born) VALUES (?, ?, ?, ?)';
-  connection.query(sql, [name, surname, nickname, born], (err, result) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.json({
-        success: true,
-        id: result.insertId,
-        uuid: req.body.id,
-        message: { type: 'success', text: 'Nice! Author added!' }
-      });
-    }
-  });
-});
-
-app.post('/books', (req, res) => {
-
-  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
-    return;
-  }
-
-  const { title, pages, genre, author_id } = req.body;
-
-  if (!title || !pages || !genre || !author_id) {
-    res.status(422).json({ message: { type: 'danger', text: 'Title, pages, genre and author are required.' } });
-    return;
-  }
-
-  const sql = 'INSERT INTO books (title, pages, genre, author_id) VALUES (?, ?, ?, ?)';
-  connection.query(sql, [title, pages, genre, author_id], (err, result) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.json({
-        success: true,
-        id: result.insertId,
-        uuid: req.body.id,
-        message: { type: 'success', text: 'Nice! Book added!' }
-      });
-    }
-  });
-});
-
-app.post('/heroes', (req, res) => {
-
-  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
-    return;
-  }
-
-  const filename = writeImage(req.body.image);
-
-  const { name, good, book_id } = req.body;
-
-  if (!name || ![0, 1].includes(good) || !book_id) {
-    res.status(422).json({ message: { type: 'danger', text: 'Name, good and book are required.' } });
-    return;
-  }
-
-  const sql = 'INSERT INTO heroes (name, good, book_id, image) VALUES (?, ?, ?, ?)';
-  connection.query(sql, [name, good, book_id, filename !== null ? ('images/' + filename) : null], (err, result) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.json({
-        success: true,
-        id: result.insertId,
-        uuid: req.body.id,
-        message: { type: 'success', text: 'Nice! Hero added!' }
-      });
-    }
-  });
-});
-
-
-app.delete('/authors/:id', (req, res) => {
-
-  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
-    return;
-  }
-
-  const sql = 'DELETE FROM authors WHERE id = ?';
-  connection.query(sql, [req.params.id], (err) => {
-    if (err) {
-      if (err.errno === 1451) {
-        res.status(422).json({ message: { type: 'danger', text: 'You can not delete this author. There are books assigned to him.' } });
-      } else {
+    connection.query(sql, (err, results) => {
+      if (err) {
         res.status(500).send(err);
+      } else {
+        res.json(results);
       }
-    } else {
-      res.json({
-        success: true,
-        id: +req.params.id,
-        message: { type: 'info', text: 'Bum! Author deleted!' }
-      });
-    }
+    });
   });
-});
 
-app.delete('/books/:id', (req, res) => {
 
-  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
-    return;
-  }
 
-  let sql;
-  sql = 'SELECT image FROM heroes WHERE book_id = ?';
-  connection.query(sql, [req.params.id], (err, results) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      results.forEach(hero => {
-        if (hero.image) {
-          fs.unlinkSync('public/' + hero.image);
+  app.post('/authors', (req, res) => {
+
+    if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+      return;
+    }
+
+
+    const { name, surname, nickname, born } = req.body;
+
+    if (!name || !surname || !born) {
+      res.status(422).json({ message: { type: 'danger', text: 'Name, surname and born are required.' } });
+      return;
+    }
+
+    const sql = 'INSERT INTO authors (name, surname, nickname, born) VALUES (?, ?, ?, ?)';
+    connection.query(sql, [name, surname, nickname, born], (err, result) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json({
+          success: true,
+          id: result.insertId,
+          uuid: req.body.id,
+          message: { type: 'success', text: 'Nice! Author added!' }
+        });
+      }
+    });
+  });
+
+  app.post('/books', (req, res) => {
+
+    if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+      return;
+    }
+
+    const { title, pages, genre, author_id } = req.body;
+
+    if (!title || !pages || !genre || !author_id) {
+      res.status(422).json({ message: { type: 'danger', text: 'Title, pages, genre and author are required.' } });
+      return;
+    }
+
+    const sql = 'INSERT INTO books (title, pages, genre, author_id) VALUES (?, ?, ?, ?)';
+    connection.query(sql, [title, pages, genre, author_id], (err, result) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json({
+          success: true,
+          id: result.insertId,
+          uuid: req.body.id,
+          message: { type: 'success', text: 'Nice! Book added!' }
+        });
+      }
+    });
+  });
+
+  app.post('/heroes', (req, res) => {
+
+    if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+      return;
+    }
+
+    const filename = writeImage(req.body.image);
+
+    const { name, good, book_id } = req.body;
+
+    if (!name || ![0, 1].includes(good) || !book_id) {
+      res.status(422).json({ message: { type: 'danger', text: 'Name, good and book are required.' } });
+      return;
+    }
+
+    const sql = 'INSERT INTO heroes (name, good, book_id, image) VALUES (?, ?, ?, ?)';
+    connection.query(sql, [name, good, book_id, filename !== null ? ('images/' + filename) : null], (err, result) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json({
+          success: true,
+          id: result.insertId,
+          uuid: req.body.id,
+          message: { type: 'success', text: 'Nice! Hero added!' }
+        });
+      }
+    });
+  });
+
+
+  app.delete('/authors/:id', (req, res) => {
+
+    if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+      return;
+    }
+
+    const sql = 'DELETE FROM authors WHERE id = ?';
+    connection.query(sql, [req.params.id], (err) => {
+      if (err) {
+        if (err.errno === 1451) {
+          res.status(422).json({ message: { type: 'danger', text: 'You can not delete this author. There are books assigned to him.' } });
+        } else {
+          res.status(500).send(err);
         }
-      });
-    }
+      } else {
+        res.json({
+          success: true,
+          id: +req.params.id,
+          message: { type: 'info', text: 'Bum! Author deleted!' }
+        });
+      }
+    });
   });
 
-  sql = 'DELETE FROM books WHERE id = ?';
-  connection.query(sql, [req.params.id], (err) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.json({
-        success: true,
-        id: +req.params.id,
-        message: { type: 'info', text: 'Bum! Book deleted! All heroes from this book gone!' }
-      });
+  app.delete('/books/:id', (req, res) => {
+
+    if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+      return;
     }
-  }
-  );
-});
 
-app.delete('/heroes/:id', (req, res) => {
+    let sql;
+    sql = 'SELECT image FROM heroes WHERE book_id = ?';
+    connection.query(sql, [req.params.id], (err, results) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        results.forEach(hero => {
+          if (hero.image) {
+            fs.unlinkSync('public/' + hero.image);
+          }
+        });
+      }
+    });
 
-  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
-    return;
-  }
-
-  deleteImage(req.params.id);
-
-  sql = 'DELETE FROM heroes WHERE id = ?';
-  connection.query(sql, [req.params.id], (err) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.json({
-        success: true,
-        id: +req.params.id,
-        message: { type: 'info', text: 'Bum! Hero deleted!' }
-      });
+    sql = 'DELETE FROM books WHERE id = ?';
+    connection.query(sql, [req.params.id], (err) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json({
+          success: true,
+          id: +req.params.id,
+          message: { type: 'info', text: 'Bum! Book deleted! All heroes from this book gone!' }
+        });
+      }
     }
+    );
   });
-});
 
+  app.delete('/heroes/:id', (req, res) => {
 
-
-app.put('/authors/:id', (req, res) => {
-
-  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
-    return;
-  }
-
-  const { name, surname, nickname, born } = req.body;
-
-  if (!name || !surname || !born) {
-    res.status(422).json({ message: { type: 'danger', text: 'Name, surname and born are required.' } });
-    return;
-  }
-
-
-  const sql = 'UPDATE authors SET name = ?, surname = ?, nickname = ?, born = ? WHERE id = ?';
-  connection.query(sql, [name, surname, nickname, born, req.params.id], (err) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.json({
-        success: true,
-        id: +req.params.id,
-        message: { type: 'success', text: 'Perfect! Author updated!' }
-      });
+    if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+      return;
     }
-  });
-});
 
-app.put('/books/:id', (req, res) => {
-
-  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
-    return;
-  }
-
-  const { title, pages, genre, author_id } = req.body;
-
-  if (!title || !pages || !genre || !author_id) {
-    res.status(422).json({ message: { type: 'danger', text: 'Title, pages, genre and author are required.' } });
-    return;
-  }
-
-  const sql = 'UPDATE books SET title = ?, pages = ?, genre = ?, author_id = ? WHERE id = ?';
-  connection.query(sql, [title, pages, genre, author_id, req.params.id], (err) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.json({
-        success: true,
-        id: +req.params.id,
-        message: { type: 'success', text: 'Perfect! Book updated!' }
-      });
-    }
-  });
-});
-
-app.put('/heroes/:id', (req, res) => {
-
-  if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
-    return;
-  }
-
-  if (req.body.del) {
     deleteImage(req.params.id);
-  }
-  const filename = writeImage(req.body.image);
-  const { name, good, book_id } = req.body;
 
-  if (!name || ![0, 1].includes(good) || !book_id) {
-    res.status(422).json({ message: { type: 'danger', text: 'Name, good and book are required.' } });
-    return;
-  }
-
-  let sql;
-  let params;
-  if (req.body.del || filename !== null) {
-    sql = 'UPDATE heroes SET name = ?, good = ?, book_id = ?, image = ? WHERE id = ?';
-    params = [name, good, book_id, filename !== null ? ('images/' + filename) : null, req.params.id];
-  } else {
-    sql = 'UPDATE heroes SET name = ?, good = ?, book_id = ? WHERE id = ?';
-    params = [name, good, book_id, req.params.id];
-  }
-
-  connection.query(sql, params, (err) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.json({
-        success: true,
-        id: +req.params.id,
-        message: { type: 'success', text: 'Perfect! Hero updated!' }
-      });
-    }
+    sql = 'DELETE FROM heroes WHERE id = ?';
+    connection.query(sql, [req.params.id], (err) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json({
+          success: true,
+          id: +req.params.id,
+          message: { type: 'info', text: 'Bum! Hero deleted!' }
+        });
+      }
+    });
   });
-});
 
 
 
+  app.put('/authors/:id', (req, res) => {
 
-
-
-app.post('/fruits', (req, res) => {
-
-
-
-  const { name, color, form } = req.body;
-  const sql = 'INSERT INTO fruits (name, color, form ) VALUES (?, ?, ?)';
-  connection.query(sql, [name, color, form], (err, result) => {
-    if (err) {
-      res.status(500);
-    } else {
-      res.json({ success: true, id: result.insertId, uuid: req.body.id });
+    if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+      return;
     }
-  });
-});
 
-app.put('/fruits/:id', (req, res) => {
+    const { name, surname, nickname, born } = req.body;
 
-
-
-  const { name, color, form } = req.body;
-  const sql = 'UPDATE fruits SET name = ?, color = ?, form = ? WHERE id = ?';
-  connection.query(sql, [name, color, form, req.params.id], (err) => {
-    if (err) {
-      res.status(500);
-    } else {
-      res.json({ success: true, id: +req.params.id });
+    if (!name || !surname || !born) {
+      res.status(422).json({ message: { type: 'danger', text: 'Name, surname and born are required.' } });
+      return;
     }
+
+
+    const sql = 'UPDATE authors SET name = ?, surname = ?, nickname = ?, born = ? WHERE id = ?';
+    connection.query(sql, [name, surname, nickname, born, req.params.id], (err) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json({
+          success: true,
+          id: +req.params.id,
+          message: { type: 'success', text: 'Perfect! Author updated!' }
+        });
+      }
+    });
   });
-});
 
+  app.put('/books/:id', (req, res) => {
 
-app.delete('/fruits/:id', (req, res) => {
-
-
-
-  const sql = 'DELETE FROM fruits WHERE id = ?';
-  connection.query(sql, [req.params.id], (err) => {
-    if (err) {
-      res.status(500);
-    } else {
-      res.json({ success: true, id: +req.params.id });
+    if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+      return;
     }
+
+    const { title, pages, genre, author_id } = req.body;
+
+    if (!title || !pages || !genre || !author_id) {
+      res.status(422).json({ message: { type: 'danger', text: 'Title, pages, genre and author are required.' } });
+      return;
+    }
+
+    const sql = 'UPDATE books SET title = ?, pages = ?, genre = ?, author_id = ? WHERE id = ?';
+    connection.query(sql, [title, pages, genre, author_id, req.params.id], (err) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json({
+          success: true,
+          id: +req.params.id,
+          message: { type: 'success', text: 'Perfect! Book updated!' }
+        });
+      }
+    });
   });
-});
+
+  app.put('/heroes/:id', (req, res) => {
+
+    if (!checkUserIsAuthorized(req.user, res, ['admin', 'user', 'animal'])) {
+      return;
+    }
+
+    if (req.body.del) {
+      deleteImage(req.params.id);
+    }
+    const filename = writeImage(req.body.image);
+    const { name, good, book_id } = req.body;
+
+    if (!name || ![0, 1].includes(good) || !book_id) {
+      res.status(422).json({ message: { type: 'danger', text: 'Name, good and book are required.' } });
+      return;
+    }
+
+    let sql;
+    let params;
+    if (req.body.del || filename !== null) {
+      sql = 'UPDATE heroes SET name = ?, good = ?, book_id = ?, image = ? WHERE id = ?';
+      params = [name, good, book_id, filename !== null ? ('images/' + filename) : null, req.params.id];
+    } else {
+      sql = 'UPDATE heroes SET name = ?, good = ?, book_id = ? WHERE id = ?';
+      params = [name, good, book_id, req.params.id];
+    }
+
+    connection.query(sql, params, (err) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json({
+          success: true,
+          id: +req.params.id,
+          message: { type: 'success', text: 'Perfect! Hero updated!' }
+        });
+      }
+    });
+  });
 
 
 
 
 
-app.listen(port, () => {
-  console.log(`KNYGŲ SERVERIS klauso ${port} porto.`);
-});
+
+  app.post('/fruits', (req, res) => {
+
+
+
+    const { name, color, form } = req.body;
+    const sql = 'INSERT INTO fruits (name, color, form ) VALUES (?, ?, ?)';
+    connection.query(sql, [name, color, form], (err, result) => {
+      if (err) {
+        res.status(500);
+      } else {
+        res.json({ success: true, id: result.insertId, uuid: req.body.id });
+      }
+    });
+  });
+
+  app.put('/fruits/:id', (req, res) => {
+
+
+
+    const { name, color, form } = req.body;
+    const sql = 'UPDATE fruits SET name = ?, color = ?, form = ? WHERE id = ?';
+    connection.query(sql, [name, color, form, req.params.id], (err) => {
+      if (err) {
+        res.status(500);
+      } else {
+        res.json({ success: true, id: +req.params.id });
+      }
+    });
+  });
+
+
+  app.delete('/fruits/:id', (req, res) => {
+
+
+
+    const sql = 'DELETE FROM fruits WHERE id = ?';
+    connection.query(sql, [req.params.id], (err) => {
+      if (err) {
+        res.status(500);
+      } else {
+        res.json({ success: true, id: +req.params.id });
+      }
+    });
+  });
+
+
+
+
+
+  app.listen(port, () => {
+    console.log(`KNYGŲ SERVERIS klauso ${port} porto.`);
+  });

@@ -51,6 +51,7 @@ const createBooksTable = _ => {
     const sql = `CREATE TABLE IF NOT EXISTS books (
         id INT AUTO_INCREMENT PRIMARY KEY,
         url VARCHAR(200) NOT NULL UNIQUE,
+        ratings TEXT default '[]',
         title VARCHAR(100) NOT NULL,
         pages INT(5) NOT NULL,
         genre VARCHAR(100) NOT NULL,

@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import Page404 from '../Pages/Page404.jsx';
 import Page401 from '../Pages/Page401.jsx';
@@ -34,6 +35,13 @@ export const RouterProvider = () => {
         }
         window.addEventListener('hashchange', handleHashChange);
         return _ => window.removeEventListener('hashchange', handleHashChange);
+    }, []);
+
+    useEffect(_ => {
+        const userMark = localStorage.getItem('userMark');
+        if (!userMark) {
+            localStorage.setItem('userMark', uuidv4());
+        }
     }, []);
 
 
