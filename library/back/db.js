@@ -35,6 +35,7 @@ const createUsersTable = _ => {
 const createAuthorsTable = _ => {
     const sql = `CREATE TABLE IF NOT EXISTS authors (
         id INT AUTO_INCREMENT PRIMARY KEY,
+        url VARCHAR(200) NOT NULL UNIQUE,
         name VARCHAR(100) NOT NULL,
         surname VARCHAR(100) NOT NULL,
         nickname VARCHAR(100) NULL,
@@ -68,6 +69,7 @@ const createBooksTable = _ => {
 const createHeroesTable = _ => {
     const sql = `CREATE TABLE IF NOT EXISTS heroes (
         id INT AUTO_INCREMENT PRIMARY KEY,
+        url VARCHAR(200) NOT NULL UNIQUE,
         name VARCHAR(100) NOT NULL,
         good BOOLEAN NOT NULL DEFAULT 1,
         image VARCHAR(200) NULL,
@@ -131,12 +133,12 @@ const seedUsersTable = _ => {
 
 // Seed authors table
 const seedAuthorsTable = _ => {
-    const sql = `INSERT INTO authors (name, surname, nickname, born) VALUES 
-    ('John', 'Tolkien', 'Tolkinas', '1892-01-03'),
-    ('Abrams', 'Rowling', NULL, '1965-07-31'),
-    ('Stephen', 'King', NULL, '1947-09-21'),
-    ('George', 'Martin', 'Georg', '1948-09-20'),
-    ('Kate', 'Martin','Cyborg', '1948-09-20')
+    const sql = `INSERT INTO authors (name, surname, nickname, born, url) VALUES 
+    ('John', 'Tolkien', 'Tolkinas', '1892-01-03', 'john-tolkien'),
+    ('Abrams', 'Rowling', NULL, '1965-07-31', 'abrams-rowling'),
+    ('Stephen', 'King', NULL, '1947-09-21', 'stephen-king'),
+    ('George', 'Martin', 'Georg', '1948-09-20', 'george-martin'),
+    ('Kate', 'Martin','Cyborg', '1948-09-20', 'kate-martin')
     `;
     connection.query(sql, function(err) {
         if (err) throw err;
@@ -171,24 +173,24 @@ const seedBooksTable = _ => {
 
 // Seed heroes table
 const seedHeroesTable = _ => {
-    const sql = `INSERT INTO heroes (name, good, image, book_id) VALUES 
-    ('Frodo Baggins', 1, 'images/01.jpg', 1),
-    ('Samwise Gamgee', 1, 'images/02.jpg', 15),
-    ('Gandalf', 1, NULL, 1),
-    ('Harry Potter', 0, 'images/03.jpg', 12),
-    ('Hermione Granger', 1, 'images/04.jpg', 12),
-    ('Ron Weasley', 0, 'images/05.jpg', 2),
-    ('Jack Torrance', 0, NULL, 3),
-    ('Wendy Torrance', 1, 'images/06.jpg', 6),
-    ('Danny Torrance', 0, 'images/07.jpg', 3),
-    ('Ned Stark', 1, 'images/08.jpg', 4),
-    ('Catelyn Stark', 0, 'images/09.jpg', 7),
-    ('Robb Stark', 1, 'images/10.jpg', 8),
-    ('Tyrion Lannister', 1, 'images/11.jpg', 5),
-    ('Daenerys Targaryen', 1, 'images/12.jpg', 9),
-    ('Jon Snow', 1, 'images/13.jpg', 5),
-    ('Cersei Lannister', 0, 'images/14.jpg', 10),
-    ('Jaime Lannister', 0, 'images/15.jpg', 6)
+    const sql = `INSERT INTO heroes (name, good, image, book_id, url) VALUES 
+    ('Frodo Baggins', 1, 'images/01.jpg', 1, 'frodo-baggins'),
+    ('Samwise Gamgee', 1, 'images/02.jpg', 15, 'samwise-gamgee'),
+    ('Gandalf', 1, NULL, 1, 'gandalf'),
+    ('Harry Potter', 0, 'images/03.jpg', 12, 'harry-potter'),
+    ('Hermione Granger', 1, 'images/04.jpg', 12, 'hermione-granger'),
+    ('Ron Weasley', 0, 'images/05.jpg', 2, 'ron-weasley'),
+    ('Jack Torrance', 0, NULL, 3, 'jack-torrance'),
+    ('Wendy Torrance', 1, 'images/06.jpg', 6, 'wendy-torrance'),
+    ('Danny Torrance', 0, 'images/07.jpg', 3, 'danny-torrance'),
+    ('Ned Stark', 1, 'images/08.jpg', 4, 'ned-stark'),
+    ('Catelyn Stark', 0, 'images/09.jpg', 7, 'catelyn-stark'),
+    ('Robb Stark', 1, 'images/10.jpg', 8, 'robb-stark'),
+    ('Tyrion Lannister', 1, 'images/11.jpg', 5, 'tyrion-lannister'),
+    ('Daenerys Targaryen', 1, 'images/12.jpg', 9, 'daenerys-targaryen'),
+    ('Jon Snow', 1, 'images/13.jpg', 5, 'jon-snow'),
+    ('Cersei Lannister', 0, 'images/14.jpg', 10, 'cersei-lannister'),
+    ('Jaime Lannister', 0, 'images/15.jpg', 6, 'jaime-lannister')
     `;
     connection.query(sql, function(err) {
         if (err) throw err;
