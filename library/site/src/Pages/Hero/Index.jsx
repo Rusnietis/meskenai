@@ -52,7 +52,7 @@ export default function Index() {
                                 <div className="hero-info">
                                     <div>Book: {data.title}</div>
                                     <div>Author: {data.authorName} {data.authorSurname}</div>
-                                    <div><a href={'#book/' + data.book_id}>view book</a></div>
+                                    <div><a href={'#book/' + data.url} className="nice-link">view book</a></div>
                                 </div>
                             </div>
                         </div>

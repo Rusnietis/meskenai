@@ -35,9 +35,9 @@ export default function Index() {
                 authors.push({ id: item.id, name: item.name, surname: item.surname, books: [] });
             }
             if (!authors.find(author => author.id === item.id).books.some(book => book.id === item.book_id)) {
-                authors.find(author => author.id === item.id).books.push({ id: item.book_id, title: item.title, heroes: [] });
+                authors.find(author => author.id === item.id).books.push({ id: item.book_id, title: item.title, url: item.bookUrl, rate: item.rate, heroes: [] });
             }
-            authors.find(author => author.id === item.id).books.find(book => book.id === item.book_id).heroes.push({ id: item.hero_id, name: item.hero, good: item.good});
+            authors.find(author => author.id === item.id).books.find(book => book.id === item.book_id).heroes.push({ id: item.hero_id, name: item.hero, good: item.good, url: item.heroUrl});
         });
         return authors;
     }
@@ -102,7 +102,10 @@ export default function Index() {
                                                 <div className="col-4">
                                                     <ul>
                                                         {
-                                                            item.books.map(book => <li key={book.id} className="mb-20" style={{marginBottom: (book.heroes.length * 21) + 'px'}} >{book.title}</li>)
+                                                            item.books.map(book => <li key={book.id} className="mb-20" style={{marginBottom: (book.heroes.length * 21) + 'px'}} >
+                                                                <a href={'#book/' + book.url} className="nice-link">{book.title}</a>
+                                                                <span className="ms-3">{book.rate ? (book.rate + '/5') : ''}</span>
+                                                                </li>)
                                                         }
                                                     </ul>
                                                 </div>
@@ -116,10 +119,7 @@ export default function Index() {
                                                                 ?
                                                                 <ol className="mb-20">
                                                                 {book.heroes.map(hero => <li style={{color: hero.good ? 'orange' : 'skyblue'}}  key={hero.id}>
-                                                                    <a  style={{
-                                                                        color: hero.good ? 'orange' : 'skyblue',
-                                                                        textDecoration: 'none'
-                                                                        }} href={'#hero/' + hero.id}>{hero.name}</a>
+                                                                    <a className={'hero-link hero-' + hero.good} href={'#hero/' + hero.url}>{hero.name}</a>
                                                                 </li>)}
                                                                 </ol>
                                                                 :

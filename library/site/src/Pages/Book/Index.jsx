@@ -18,7 +18,7 @@ export default function Index() {
 
     const { data: rating, loading: ratingLoading } = useGet('/rating/' + (params[0] || '') + '/' + localStorage.getItem('userMark'));
 
-    const { setSendData, returnData, loading: rateLoading, setPostUrl } = usePost();
+    const { setSendData, setPostUrl } = usePost();
 
     const [rate, setRate] = useState(0);
 
@@ -27,7 +27,7 @@ export default function Index() {
     const heroes = data => {
         const h = [];
         data.forEach(item => {
-            h.push({ id: item.hero_id, name: item.hero, good: item.good, image: item.image });
+            h.push({ id: item.hero_id, name: item.hero, good: item.good, image: item.image, url: item.heroUrl });
         });
         return h;
     }
@@ -54,8 +54,12 @@ export default function Index() {
         setRate(0);
     }, [rate, setSendData, setPostUrl, book.id]);
 
+   
+
 
     if (loading) return (<div className="loader"><div></div></div>);
+
+    console.log(book);
 
     return (
         <>
@@ -91,7 +95,7 @@ export default function Index() {
                                                     <div className="col-4 heroes-list" key={hero.id}>
                                                         {hero.image === null && <img src={SERVER_URL + '/images/no.jpg'} alt={hero.name} style={{ maxWidth: '300px' }} className="img-thumbnail" />}
                                                         {hero.image && <img src={SERVER_URL + '/' + hero.image} alt={hero.name} style={{ maxWidth: '300px' }} className="img-thumbnail" />}
-                                                        <p>{hero.name}</p>
+                                                        <div><a href={'#hero/' + hero.url} className="nice-link">{hero.name}</a></div>
                                                         <span className={'icon ' + (hero.good ? 'good' : 'bad')}>{hero.good ? icon.good : icon.bad}</span>
                                                     </div>
                                                 ))}
