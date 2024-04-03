@@ -11,7 +11,7 @@ export default function Index() {
 
     const [sort, setSort] = useState('');
 
-    const { data, loading, setUrl } = useGet('/');
+    const { data, loading, setUrl } = useGet('/landing');
 
 
     // const authorsBooks = data => {
@@ -30,6 +30,7 @@ export default function Index() {
     const authorsBooksHeroes = data => {
         if (!data) return [];
         const authors = [];
+        console.log(data);
         data.forEach(item => {
             if (!authors.some(author => author.id === item.id)) {
                 authors.push({ id: item.id, name: item.name, surname: item.surname, books: [] });
@@ -44,9 +45,9 @@ export default function Index() {
 
     useEffect(_ => {
         if (sort) {
-            setUrl(`/?sort=${sort}`);
+            setUrl(`/landing/?sort=${sort}`);
         } else {
-            setUrl('/');
+            setUrl('/landing');
         }
     }, [sort, setUrl]);
 

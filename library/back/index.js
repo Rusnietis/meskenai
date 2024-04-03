@@ -113,7 +113,7 @@ app.use(doAuth);
 // FRONT OFFICE //
 
 
-app.get('/', (req, res) => {
+app.get('/landing', (req, res) => {
   const sort = req.query.sort || '';
   let sql;
 
