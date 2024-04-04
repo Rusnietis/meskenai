@@ -1,56 +1,40 @@
-import Rabit from "./Rabit";
+import Rabit from './Rabit';
 
-export default function Racoon({svoris, name, color, randomColor, children}) {
+export default function Racoon({ svoris, name, color, randomColor, children }) {
 
     const doThing = _ => {
-        return 'Nice animal'
+        return 'Nice animal';
     }
 
-    const yes = <><h3>yes, true</h3>{doThing()}</>;
 
+
+    const yes = <><h3>Yes, true</h3>{doThing()}</>;
 
     return (
+
         <>
-
-
-
-            <h2 style={{ color: what.color}}>
-
+            <h2 style={{ color }}>
                 Racoon
-                {what.name}
-                {' '}
-                {/* {svoris *2} kg */}
-
-                
+                {name}
+                <div>{svoris * 2} kg</div>
             </h2>
+            {children}
             <i>
                 {
-                    doThing()
-                }
-                {
                     0
-                    ?
-                    yes
-                    :
-                    <Rabit randomColor={randomColor} />
+                        ?
+                        yes
+                        :
+                        <Rabit randomColor={randomColor} />
                 }
                 {
-                    0 && <h3>False</h3>
-
+                    false && <h3>False</h3>
                 }
             </i>
-           {children}
+
         </>
 
-    )
-
-
-
-
-
-
-
-
+    );
 
 
 }

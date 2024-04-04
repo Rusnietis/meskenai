@@ -1,3 +1,5 @@
+// 26 paskaita
+
 import './App.scss';
 import Animal from './Components/026/Animal';
 

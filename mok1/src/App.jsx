@@ -1,85 +1,79 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+// 28 paskaita
+
+
 import './App.scss';
 import './buttons.scss';
-import './form.scss';
-import Create from './Components/Bank/Create';
-import Read from './Components/Bank/Read';
-import Delete from './Components/Bank/Delete';
-import Edit from './Components/Bank/Edit';
 import { useEffect, useState } from 'react';
-import { lsDestroy, lsRead, lsStore, lsUpdate } from './Components/Bank/lsManager';
+import Sq from './Components/028/Sq';
+import randomColor from './Functions/randomColor';
+import { v4 as uuidv4 } from 'uuid';
+import BigSq1 from './Components/028/BigSq1';
+import BigSq2 from './Components/028/BigSq2';
+
 
 export default function App() {
 
-    const KEY = 'accounts';
-    const [accounts, setAccounts] = useState([]);
-    const [createData, setCreateData] = useState(null);
-    const [deleteData, setDeleteData] = useState(null);
-    const [destroyData, setDestroyData] = useState(null);
-    const [editData, setEditData] = useState(null);
-    const [updateData, setUpdateData] = useState(null);
+    const [squares, setSquares] = useState([]);
 
+    const [sq2, setSq2] = useState('#444444');
+    const [sq1, setSq1] = useState('#444444');
+
+    const [sync, setSync] = useState(false);
 
     useEffect(_ => {
-        setAccounts(lsRead(KEY));
-       
-    }, []);
-
-    useEffect(_ => {
-        if (null === createData) {
-            return;
+        console.log('Squres are changed');
+        if (sync) {
+            setSquares(s => s.map(s => ({ ...s, show: true })));
+            setSync(false);
         }
-        const id = lsStore(KEY, createData);
-        setAccounts(prevaccounts => [...prevaccounts, { ...createData, id }]);
-        console.log(createData);
-    }, [createData]);
+    }, [squares]);
 
-    useEffect(_ => {
-        if (null === destroyData) {
-            return;
+
+    const add = _ => {
+        setSquares(s => [...s,
+        {
+            color: randomColor(),
+            id: uuidv4(),
+            show: true
         }
+        ]);
+    }
 
-        lsDestroy(KEY, destroyData);  //id
+    const reset = _ => {
+        setSquares(s => s.map(s => ({ ...s, show: false })));
+    }
 
-        setAccounts(prevAccounts => prevAccounts.filter(account => account.id !== destroyData.id));
+    const syncSpin = _ => {
+        setSquares(s => s.map(s => ({ ...s, show: false })));
+        setSync(true);
+    }
 
-        setDeleteData(null);
-
-    }, [destroyData]);
-
-    useEffect(_ => {
-
-        if (null === updateData) {
-            return;
-        }
-
-        lsUpdate(KEY, updateData.id, updateData);
-
-        setAccounts(prevAccounts => prevAccounts.map(account => account.id === updateData.id ? updateData : account));   //{ ...updateData, id }
-
-        setEditData(null);
-
-    }, [updateData]);
 
 
     return (
+        <div className="App">
+            <header className="App-header">
+                <h1>This is STATE part II</h1>
+                <div className="squares">
+                    {
+                        squares.map((s, i) => s.show ? <Sq setSquares={setSquares} square={s} key={i} /> : null)
+                    }
+                </div>
+                <div className="buttons">
+                    <button className="black" onClick={add}>+</button>
+                    <button className="red" onClick={reset}>0</button>
+                    <button className="green" onClick={_ => setSquares(s => s.map(s => ({ ...s, show: true })))}>*</button>
+                    <button className="yellow" onClick={syncSpin}>sync</button>
+                </div>
+                <div className="squares">
+                    <BigSq1 sq1={sq1} setSq1={setSq2} />
+                    <BigSq2 sq2={sq2} setSq2={setSq1} />
 
-        <>
-            <div className="container mt-5">
-                <div className="row">
-                    <div className="row-1">
-                        <Read accounts={accounts} setDeleteData={setDeleteData} setEditData={setEditData}/>
-                    </div>
-                    <div className="row-2">
-                        <Create setCreateData={setCreateData} />
-                    </div>
                 </div>
 
 
-            </div>
-            <Delete deleteData={deleteData} setDeleteData={setDeleteData} setDestroyData={setDestroyData} />
-            <Edit editData={editData} setEditData={setEditData} setUpdateData={setUpdateData}/>
-        
-        </>
+
+            </header>
+        </div>
     );
 }
