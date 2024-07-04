@@ -1,79 +1,44 @@
-// 28 paskaita
-
-
+import React, { useState } from 'react';
 import './App.scss';
 import './buttons.scss';
-import { useEffect, useState } from 'react';
-import Sq from './Components/028/Sq';
-import randomColor from './Functions/randomColor';
-import { v4 as uuidv4 } from 'uuid';
-import BigSq1 from './Components/028/BigSq1';
-import BigSq2 from './Components/028/BigSq2';
 
 
-export default function App() {
+export default function ExampleComponent() {
+    const [count, setCount] = useState(0);
+    const [trinti, setTrinti] = useState(0)
 
-    const [squares, setSquares] = useState([]);
+    const onClickPlius = (_ => {
+        setCount(count + 1)
+    })
+    const onClickMinus = (_ => {
+        setCount(count - 1)
+    })
 
-    const [sq2, setSq2] = useState('#444444');
-    const [sq1, setSq1] = useState('#444444');
-
-    const [sync, setSync] = useState(false);
-
-    useEffect(_ => {
-        console.log('Squres are changed');
-        if (sync) {
-            setSquares(s => s.map(s => ({ ...s, show: true })));
-            setSync(false);
-        }
-    }, [squares]);
-
-
-    const add = _ => {
-        setSquares(s => [...s,
-        {
-            color: randomColor(),
-            id: uuidv4(),
-            show: true
-        }
-        ]);
+    const onClickTrinti = _ => {
+        setTrinti(count)
     }
-
-    const reset = _ => {
-        setSquares(s => s.map(s => ({ ...s, show: false })));
-    }
-
-    const syncSpin = _ => {
-        setSquares(s => s.map(s => ({ ...s, show: false })));
-        setSync(true);
-    }
-
-
+    // useEffect(() => {
+    //     // Šis kodas vykdomas kiekvieną kartą, kai count pasikeičia
+    //     document.title = `Jūs paspaudėte ${count} kartus`;
+       
+    // }, [count]);
 
     return (
-        <div className="App">
-            <header className="App-header">
-                <h1>This is STATE part II</h1>
-                <div className="squares">
-                    {
-                        squares.map((s, i) => s.show ? <Sq setSquares={setSquares} square={s} key={i} /> : null)
-                    }
-                </div>
-                <div className="buttons">
-                    <button className="black" onClick={add}>+</button>
-                    <button className="red" onClick={reset}>0</button>
-                    <button className="green" onClick={_ => setSquares(s => s.map(s => ({ ...s, show: true })))}>*</button>
-                    <button className="yellow" onClick={syncSpin}>sync</button>
-                </div>
-                <div className="squares">
-                    <BigSq1 sq1={sq1} setSq1={setSq2} />
-                    <BigSq2 sq2={sq2} setSq2={setSq1} />
+        <>
+            <table>
+           <h3 style={{color: 'orange', backgroundColor: 'black', fontSize: '25px'  }}>Jūs paspaudėte: {count} kartus</h3>
+            
+            <button onClick={onClickPlius}>
+                Paspauskite mane
+            </button> 
+            <button onClick={onClickMinus}>
+                Sumažinkite mane
+            </button>
+            <button onClick={onClickTrinti}>
+                Trinti
+            </button>
+            </table>
 
-                </div>
-
-
-
-            </header>
-        </div>
+        </>
     );
 }
