@@ -34,11 +34,11 @@ h1.style.textAlign = 'center';
 
 setTimeout(_ => {
 
-let text = h1.innerText; // getter
-console.log(text);
-// replace Object to Racoon
-text = text.replace('Object', 'Racoon');
-h1.innerText = text; // setter
+    let text = h1.innerText; // getter
+    console.log(text);
+    // replace Object to Racoon
+    text = text.replace('Object', 'Racoon');
+    h1.innerText = text; // setter
 
 }, 3000);
 
@@ -77,5 +77,5 @@ const img = document.querySelector('img');
 
 setInterval(_ => {
     img.setAttribute('src', img.getAttribute('src') === 'racoon.jpg' ? 'racoon2.jpg' : 'racoon.jpg');
-  }
-  , 2000);
+}
+    , 2000);

@@ -140,4 +140,4 @@ const me = 'Racoon';
 
 console.log(me.hello());
 
-console.log('Racoon'.hello
+console.log('Racoon'.hello());

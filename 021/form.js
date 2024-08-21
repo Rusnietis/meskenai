@@ -1,5 +1,6 @@
 console.log('Nice Form');
 
+
 const form = document.querySelector('form');
 const button = form.querySelector('button');
 

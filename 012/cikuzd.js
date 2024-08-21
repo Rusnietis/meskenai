@@ -141,10 +141,10 @@ for (let i = 0; i < 25; i++) {
         suma1 += fiveBig
         console.log('%cCiklas baigtas, kadangi fiveBig >18', 'background-color: red; color: white; font-size: 12px; padding: 5px 10px');
         continue;
-        
+
 
     }
-    
+
     suma += fiveBig; // C dalis
 
     console.log(`%cIteracijos: ${i + 1}`, 'background-color: yellow; color: black; padding: 5px 5px');
@@ -152,10 +152,9 @@ for (let i = 0; i < 25; i++) {
 }
 
 
-console.log(('Suma fivebig:', suma) || 'CIKLO PABAIGA');
-console.log('Praleistu ikintamuju suma:', suma1)
+console.log(`%cKintamuju suma sugeneruota nuo 12 iki 18: ${suma}`, 'background-color: blue; color: white; padding: 5px 5px');
+console.log('Praleistu kintamuju suma:', suma1)
 console.log(`%cPraleistos iteracijos: ${count2}`, 'background-color: yellow; color: black; padding: 5px 5px');
-
 console.log('%cCiklo pabaiga', 'background-color: darkred; color: white; font-size: 12px; padding: 5px 10px');
 console.log(`%cBendrai iteracijos: ${count1}`, 'background-color: yellow; color: black; padding: 5px 5px'); // B dalis
 
