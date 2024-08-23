@@ -1,9 +1,5 @@
 console.log('Say hi to Objects!');
 
-const a = 5
-a = 7
-console.log(a)
-
 //shortcuts
 const arr = [];
 const obj = {};
@@ -126,17 +122,14 @@ class Colors4 extends Circle {
 
         constructor(place) {
             super(place); // call parent constructor
-            
+            this.circleDiv.textContent = 'bla';
         }
     
         randomColor() {
             const randomIndex = Math.floor(Math.random() * this.constructor.colors.length);
-/        }
+            return this.constructor.colors[randomIndex];
+        }
 }
 
 
 Colors4.init(circlesPlace, buttonsPlace, 6);
-
-const = 5
-a = 5
-console.log(a)
