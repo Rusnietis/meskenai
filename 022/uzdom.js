@@ -112,11 +112,19 @@ console.log(sum1);
 console.log('%cTrecias uždavinys:', 'background-color: red; color: white; font-size: 12px; padding: 5px 10px');
 // A Dalis:
 // const h1 = document.querySelector('h1');
-const button = document.querySelector('button');
+const button1 = document.querySelector('#h1-color');
 
-button.addEventListener('click', _ => {
+button1.addEventListener('click', _ => {
     h1.style.color = 'orange';
 })
+const button2 = document.querySelector('#h1-font');
+
+button2.addEventListener('click', _ => {
+    h1.style.fontSize = '10px';
+});
+
+console.log(button2);
+
 // B Dalis:
 
 i.addEventListener('click', _ => {
@@ -126,18 +134,124 @@ console.log(i)
 // C Dalis:
 let bigPrices = document.querySelector('.prices');
 
-bigPrices.addEventListener('click', _ => {
+let bigPrices1 = true;
 
-    bigPrices.style.backgroundColor = 'grey';
+bigPrices.addEventListener('click', _ => {
+    if (bigPrices1) {
+        bigPrices.style.backgroundColor = 'grey';
+    } else {
+        bigPrices.style.backgroundColor = 'white';
+    }
+
+    bigPrices1 = !bigPrices1;
+});
+// D Dalis:
+
+let contacts = document.querySelector('#contacts');
+
+contacts.addEventListener('click', _ => {
+
+    contacts.style.backgroundColor = 'orange';
 
 });
-// let bigPrices1 = document.querySelector('.prices');
 
-// bigPrices1.addEventListener('click', _ => {
+console.log(contacts)
+// E Dalis:
 
-//     bigPrices1.style.backgroundColor = 'white';
-// });
+let padidinti = document.querySelector('u');
 
-// console.log(bigPrices1)
+padidinti.addEventListener('click', _ => {
 
+    contacts.style.fontSize = ('20px')
+
+});
+// F Dalis:
+
+let contacts1 = document.querySelector('b');
+
+console.log(contacts);
+
+contacts1.addEventListener('click', _ => {
+    function backTo() {
+        contacts.style.backgroundColor = '';
+    }
+    backTo(contacts);
+
+});
+
+console.log(contacts1);
+// G Dalis:
+let goBack = document.querySelector('#h1-color-back');
+
+goBack.addEventListener('click', _ => {
+    h1.style.color = '';
+})
+
+let goBack1 = document.querySelector('#h1-font-back');
+
+goBack1.addEventListener('click', _ => {
+    h1.style.fontSize = '';
+})
+
+
+
+console.log('%cKetvirtas  uždavinys:', 'background-color: red; color: white; font-size: 12px; padding: 5px 10px');
+// A Dalis:
+let allNew1 = document.querySelectorAll('.new');
+
+allNew1.forEach(allNew1 => {
+    allNew1.addEventListener('dblclick', _ => {
+        allNew1.style.color = 'red';
+    })
+});
+// B Dalis:
+// let li = document.querySelectorAll('li');
+let li1 = document.querySelectorAll('.like-button');
+console.log(li1)
+li.forEach(li => {
+
+    li.addEventListener('click', _ =>{
+        if (li !== li1) {
+        li.style.fontSize = '130%';
+        } else {
+            li.style.fontSize = '100%';
+        }
+    });
+});
+console.log(li);
+// B Dalis:
+li1.forEach(li1 => {
+
+    li1.addEventListener('click', _ => {
+        li1.classList.add('like');
+    })
+})
+console.log(li);
+
+
+
+
+
+
+console.log('%cPenktas uždavinys:', 'background-color: red; color: white; font-size: 12px; padding: 5px 10px');
+//A Dalis
+// const place = document.querySelectorAll('.prices h2');
+
+// prices.innerHTML = '<h2>Senjorai tik: 1.99 eur</h2>';
+
+const prices1 = document.querySelectorAll('.prices h2');
+
+const newElement = document.createElement('h2');
+const textNode = document.createTextNode('Senjorai tik: 1.99 eur');
+newElement.appendChild(textNode);
+h2.appendChild(newElement);
+//B Dalis
+
+const newElement1 = document.createElement('h2');
+const textNode1 = document.createTextNode('Senjorų grupė iki 10: tik 5.99 eur');
+newElement1.appendChild(textNode1);
+h2.appendChild(newElement1);
+newElement1.classList.add('new')
+console.log(newElement1);
+newElement1.addEventListener('click', _=> newElement1.style.color = 'darkgreen');
 
