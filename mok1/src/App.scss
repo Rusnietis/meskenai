@@ -22,66 +22,66 @@ h6 {
 }
 
 
-// .sq-bin {
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
-//   justify-content: center;
-//   flex-wrap: wrap;
-//   width: 70%;
-// }
+.sq-bin {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 70%;
+}
 
-// .sq {
-//   width: 20px;
-//   height: 20px;
-// }
+.sq {
+  width: 20px;
+  height: 20px;
+}
 
-// .squares {
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
-//   justify-content: flex-start;
-//   flex-wrap: wrap;
-//   width: 70%;
-//   gap: 10px;
-//   margin: 20px;
+.squares {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 70%;
+  gap: 10px;
+  margin: 20px;
 
-//   .square {
-//     width: 150px;
-//     height: 150px;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     color: white;
-//     font-size: 16px;
-//     background-color: #282c34;
-//     border: 1px solid white;
-//     border-radius: 10px;
+  .square {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    background-color: #282c34;
+    border: 1px solid white;
+    border-radius: 10px;
 
-//     &__animal {
-//       letter-spacing: 2px;
-//     }
+    &__animal {
+      letter-spacing: 2px;
+    }
 
-//     &.spin {
-//       animation: spin 10s linear infinite;
-//     }
+    &.spin {
+      animation: spin 10s linear infinite;
+    }
 
-//     &.pulse {
-//       animation: pulse 1s linear infinite;
-//       animation-delay: 0.5s;
-//     }
+    &.pulse {
+      animation: pulse 1s linear infinite;
+      animation-delay: 0.5s;
+    }
 
-//     &.pointer {
-//       cursor: pointer;
-//       user-select: none;
-//     }
+    &.pointer {
+      cursor: pointer;
+      user-select: none;
+    }
 
-//     &.big {
-//       width: 300px;
-//       height: 300px;
-//     }
-//   }
-// }
+    &.big {
+      width: 300px;
+      height: 300px;
+    }
+  }
+}
 
 // @keyframes pulse {
 //   0% {
