@@ -83,6 +83,32 @@ h6 {
   }
 }
 
+.circles {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 70%;
+  gap: 10px;
+  margin: 20px;
+
+  .circle {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    background-color: #282c34;
+    border: 1px solid white;
+    border-radius: 50%;
+    &__animal {
+      letter-spacing: 2px;
+    }
+  }
+}
 // @keyframes pulse {
 //   0% {
 //     transform: scale(1);
@@ -103,36 +129,36 @@ h6 {
 //   }
 // }
 
-// .dogs {
-//   display: flex;
-//   gap: 10px;
-//   margin: 30px;
+.dogs {
+  display: flex;
+  gap: 10px;
+  margin: 30px;
 
-//   .dog {
-//     width: 100px;
-//     height: 100px;
-//     border: 1px solid white;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     color: white;
-//     font-size: 16px;
-//   }
+  .dog {
+    width: 100px;
+    height: 100px;
+    border: 1px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+  }
 
-//   .circle {
-//     border-radius: 50%;
-//   }
+  .circle {
+    border-radius: 50%;
+  }
 
-//   .square {
-//     border: 1px solid gray;
-//   }
-// }
+  .square {
+    border: 1px solid gray;
+  }
+}
 
-// .color-circle {
-//   width: 300px;
-//   height: 300px;
-//   border-radius: 5px;
-// }
+.color-circle {
+  width: 300px;
+  height: 300px;
+  border-radius: 5px;
+}
 
 // .modal {
 //   display: block;

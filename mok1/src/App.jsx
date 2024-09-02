@@ -1,72 +1,35 @@
-// 26 paskaita
-
 import './App.scss';
-import Animal from './Components/026/Animal';
-
-// import Sq from './Components/026/Sq';
-
+// import randomColor from './Functions/randomColor';
+// import Dogs from './Components/Lists/Dogs';
 
 function App() {
 
-    // const randomColor = _ => '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
-    // const colors = [
-    //     <li>red</li>,
-    //     <li>green</li>,
-    //     <li>blue</li>,
-    //     <li>yellow</li>,
-    //     <li>orange</li>,
-    //     <li>purple</li>,
-    //     <li>pink</li>,
-    //     <li>brown</li>,
-    //     <li>black</li>
-    // ];
-
-    const colors2 = ['crimson', 'darkorange', 'skyblue', 'skyblue', 'limegreen', 'darkorchid', 'gold', 'tomato', 'dodgerblue', 'mediumseagreen', 'rebeccapurple', 'darkkhaki', 'steelblue', 'mediumvioletred', 'darkslateblue', 'darkcyan', 'darkslategray', 'darkturquoise', 'cornflowerblue', 'darkgoldenrod', 'darkolivegreen', 'darkmagenta', 'darkred', 'darkgreen', 'darkblue', 'darkviolet', 'darkgray', 'darkslategrey'];
-
-    const farm = [
-        'Big Cow',
-        'Small Cow',
-        'Big Pig',
-        'Small Pig',
-        'Angry Chicken',
-        'Happy Chicken',
-        'Big Sheep',
-        'Bad Sheep',
-        'Big Goat',
-        'White Goat',
-        'Black Goat',
-        'Tiny Goat',
-        'Techno Chicken',
-        'Big Dog',
-        'Big Horse',
-        'Small Horse',
-        'Big Duck',
-        'Small Duck',
-        'Big Turkey',
-        'Very Big Turkey',
-        'Small Turkey'
-    ];
+    const dogs = ['šuo', 'šunius', 'Bobikas', 'kudlius', 'Šarikas', 'avigalvis'];
+    console.log(dogs);
 
     return (
         <div className="App">
             <header className="App-header">
-                <h1>LISTS</h1>
-                {/* <ul>
+                <h1>React lists uždaviniai</h1>
+                <h4>Pirmas uzdavinys</h4>
+                {/* <div className="squares">
                     {
-                        colors2.map((color, i) => <li key={i} style={{color}}>{color}</li>)
-                    }
-                </ul> */}
-                {/* <div className="sq-bin">
-                    {
-                        colors2.map((color, i) => <Sq key={i} color={color}/>)
+                        dogs.map((animal, i) => <Dogs key={i} vardas={animal} />)
                     }
                 </div> */}
-
-                <div className="squares">
+                <h4>Antras uzdavinys</h4>
+                {/* <div className="circles">
                     {
-                        farm.map((animal, i) => <Animal key={i} betKas={animal}/>)
+                        dogs.sort().map((animal, i) => <Dogs key={i} skaicius={i + 1} vardas={animal} />)
                     }
-                </div>  
+                </div> */}
+                <h4>Trecias uzdavinys</h4>
+                <div className="dogs">
+                    {
+                        dogs.map((dog, i) => <div className={'dog ' + (i % 2 ? 'circle' : 'square')} key={i}>{dog}</div>)
+                    }
+                </div>
+
             </header>
         </div>
     );
